@@ -1,0 +1,57 @@
+{
+  "mods": [
+    {
+      "name": "ipc-media",
+      "description": "mod1 describe",
+      "cmds": [
+        {
+          "name": "H1N1_SSCMD_MEDIA_SDP",
+          "datas": [
+          ]
+        },
+        {
+          "name": "H1N1_SSCMD_MEDIA_EX_PLAY",
+          "datas": [
+            {
+              "name":"SD in ? 0:no, 1:yes"
+            },
+            {
+              "name":"NC online ? 0:no, 1:yes"
+            }
+          ]
+        },
+        {
+          "name": "H1N1_SSCMD_MEDIA_NC_STATE",
+          "datas": [
+            {
+              "name":"type ? 0: H1N1_VIDEO_EVENTKEY_CAM_VIDEO, 1: H1N1_VIDEO_EVENTKEY_CAM_SAVE1"
+            },
+            {
+              "name":"connected ? 0: no, 1: yes"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ipc-ccmd",
+      "description": "mod2 describe",
+      "cmds": [
+        {
+          "name": "H1N1_CCMD_REQ_VIDEO",
+          "datas": [
+            
+          ]
+        },
+        {
+          "name": "H1N1_CCMD_REQ_PUSH_PARAM",
+          "datas": [
+            {
+                "name":"please provide the json string:"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
