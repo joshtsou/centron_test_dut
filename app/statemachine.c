@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include<stdbool.h>
-#include "statemachine_mod_handler.h"
+#include "statemachine.h"
 
 bool isRun;
 
@@ -12,22 +12,22 @@ void statemachine_init(statemachine_t *statemachine, void *data) {
     isRun = true;
 }
 
-int statemachine_run(statemachine_t *statemachine, int state_success, int state_failed) {
+int statemachine_run(statemachine_t *statemachine) {
     switch(statemachine->stat) {
         case STATEMACHINE_START:
             printf("[STATE]: STATEMACHINE_START\n");
-            statemachine->stat = statemachine_mod_handler_get_start();
+            statemachine->stat = STATEMACHINE_SLEEP;
             break;
         case STATEMACHINE_SLEEP:
             printf("[STATE]: STATEMACHINE_SLEEP\n");
             usleep(500000);
             break;
         case STATEMACHINE_SUCCESS:
-            printf("[STATE]: STATEMACHINE_SUCCESS\n");
+            //printf("[STATE]: STATEMACHINE_SUCCESS\n");
             isRun = false;
             break;
         case STATEMACHINE_FAILED:
-            printf("[STATE]: STATEMACHINE_FAILED\n");
+            //printf("[STATE]: STATEMACHINE_FAILED\n");
             isRun = false;
             break;
         default:
@@ -38,7 +38,7 @@ int statemachine_run(statemachine_t *statemachine, int state_success, int state_
 
 void statemachine_main(statemachine_t *statemachine) {
     do {
-        if(statemachine_run(statemachine, STATEMACHINE_SUCCESS, STATEMACHINE_FAILED)) continue;
-        if(statemachine_mod_handler_run(statemachine, STATEMACHINE_SUCCESS, STATEMACHINE_FAILED)) continue;
+        if(statemachine_run(statemachine)) continue;
+        //if(statemachine_mod_handler_run(statemachine, STATEMACHINE_SUCCESS, STATEMACHINE_FAILED)) continue;
     }while(isRun);
 }

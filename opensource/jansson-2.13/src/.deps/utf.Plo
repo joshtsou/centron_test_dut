@@ -1,0 +1,72 @@
+utf.lo: utf.c \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdc-predef.h \
+ utf.h ../jansson_private_config.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc/aarch64-ca53-linux-gnu/8.4.0/include/stddef.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc/aarch64-ca53-linux-gnu/8.4.0/include/stdint.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdint.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/libc-header-start.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/features.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/cdefs.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/wordsize.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/long-double.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs-lp64.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/timesize.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/typesizes.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/time64.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/wchar.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdint-intn.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdint-uintn.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/string.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/locale_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__locale_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/strings.h
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdc-predef.h:
+
+utf.h:
+
+../jansson_private_config.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc/aarch64-ca53-linux-gnu/8.4.0/include/stddef.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc/aarch64-ca53-linux-gnu/8.4.0/include/stdint.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdint.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/libc-header-start.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/features.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/cdefs.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/wordsize.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/long-double.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs-lp64.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/timesize.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/typesizes.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/time64.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/wchar.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdint-intn.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdint-uintn.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/string.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/locale_t.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__locale_t.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/strings.h:

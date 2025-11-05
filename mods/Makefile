@@ -4,6 +4,7 @@ LDFLAGS += -O2 -lev -ljansson -L$(OUTDIR)/lib
 .PHONY: $(BINDIR)
 
 all: $(OBJS)
+	cp *.h $(OUTDIR)/include
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

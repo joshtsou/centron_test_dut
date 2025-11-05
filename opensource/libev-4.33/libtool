@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # Generated automatically by config.status (libev) 4.33
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 
@@ -56,7 +56,7 @@ fast_install=needless
 shared_archive_member_spec=
 
 # Shell to use when invoking shell scripts.
-SHELL="/bin/sh"
+SHELL="/bin/bash"
 
 # An echo program that protects backslashes.
 ECHO="printf %s\\n"
@@ -65,8 +65,8 @@ ECHO="printf %s\\n"
 PATH_SEPARATOR=":"
 
 # The host system.
-host_alias=
-host=x86_64-pc-linux-gnu
+host_alias=aarch64-ca53-linux-gnu
+host=aarch64-ca53-linux-gnu
 host_os=linux-gnu
 
 # The build system.
@@ -75,22 +75,22 @@ build=x86_64-pc-linux-gnu
 build_os=linux-gnu
 
 # A sed program that does not truncate output.
-SED="/bin/sed"
+SED="/usr/bin/sed"
 
 # Sed that helps us avoid accidentally triggering echo(1) options like -n.
 Xsed="$SED -e 1s/^X//"
 
 # A grep program that handles long lines.
-GREP="/bin/grep"
+GREP="/usr/bin/grep"
 
 # An ERE matcher.
-EGREP="/bin/grep -E"
+EGREP="/usr/bin/grep -E"
 
 # A literal string matcher.
-FGREP="/bin/grep -F"
+FGREP="/usr/bin/grep -F"
 
 # A BSD- or MS-compatible name lister.
-NM="/usr/bin/nm -B"
+NM="nm"
 
 # Whether we need soft or hard links.
 LN_S="ln -s"
@@ -141,7 +141,7 @@ DLLTOOL="false"
 sharedlib_from_linklib_cmd="printf %s\\n"
 
 # The archiver.
-AR="ar"
+AR="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-ar"
 
 # Flags to create an archive.
 AR_FLAGS="cru"
@@ -150,10 +150,10 @@ AR_FLAGS="cru"
 archiver_list_spec="@"
 
 # A symbol stripping program.
-STRIP="strip"
+STRIP="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-strip"
 
 # Commands used to install an old-style archive.
-RANLIB="ranlib"
+RANLIB="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-ranlib"
 old_postinstall_cmds="chmod 644 \$oldlib~\$RANLIB \$tool_oldlib"
 old_postuninstall_cmds=""
 
@@ -161,10 +161,10 @@ old_postuninstall_cmds=""
 lock_old_archive_extraction=no
 
 # A C compiler.
-LTCC="gcc"
+LTCC="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-gcc"
 
 # LTCC compiler flags.
-LTCFLAGS="-g -O3"
+LTCFLAGS="-I/home/joshtsou/centron_test_dut/out/include -Wall -O2"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p' | sed '/ __gnu_lto/d'"
@@ -191,7 +191,7 @@ nm_file_list_spec="@"
 lt_sysroot=
 
 # Command to truncate a binary pipe.
-lt_truncate_bin="/bin/dd bs=4096 count=1"
+lt_truncate_bin="/usr/bin/dd bs=4096 count=1"
 
 # The name of the directory that contains temporary libtool files.
 objdir=.libs
@@ -249,7 +249,7 @@ runpath_var=LD_RUN_PATH
 shlibpath_var=LD_LIBRARY_PATH
 
 # Is shlibpath searched before the hard-coded library search path?
-shlibpath_overrides_runpath=yes
+shlibpath_overrides_runpath=no
 
 # Format of library name prefix.
 libname_spec="lib\$name"
@@ -281,10 +281,10 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/lib/gcc/x86_64-linux-gnu/7 /usr/lib/x86_64-linux-gnu /usr/lib /lib/x86_64-linux-gnu /lib "
+sys_lib_search_path_spec="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc/aarch64-ca53-linux-gnu/8.4.0 /opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/lib64 /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/lib64 /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/lib64 /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/lib /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/lib /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/lib "
 
 # Detected run-time system search path for libraries.
-sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/lib/x86_64-linux-gnu/libfakeroot /usr/local/lib/i386-linux-gnu /lib/i386-linux-gnu /usr/lib/i386-linux-gnu /usr/local/lib/i686-linux-gnu /lib/i686-linux-gnu /usr/lib/i686-linux-gnu /usr/local/lib /usr/local/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu /lib32 /usr/lib32 /libx32 /usr/libx32 "
+sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/local/lib /usr/local/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu "
 
 # Explicit LT_SYS_LIBRARY_PATH set during ./configure time.
 configure_time_lt_sys_library_path=""
@@ -299,12 +299,12 @@ dlopen_self=unknown
 dlopen_self_static=unknown
 
 # Commands to strip libraries.
-old_striplib="strip --strip-debug"
-striplib="strip --strip-unneeded"
+old_striplib="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-strip --strip-debug"
+striplib="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="/usr/bin/ld -m elf_x86_64"
+LD="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-ld"
 
 # How to create reloadable object files.
 reload_flag=" -r"
@@ -314,7 +314,7 @@ reload_cmds="\$LD\$reload_flag -o \$output\$reload_objs"
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$tool_oldlib"
 
 # A language specific compiler.
-CC="gcc"
+CC="/opt/aarch64-ca53-linux-gnueabihf-8.4.01/usr/bin/aarch64-ca53-linux-gnu-gcc"
 
 # Is the compiler the GNU compiler?
 with_gcc=yes

@@ -1,226 +1,273 @@
-event.lo: event.c /usr/include/stdc-predef.h \
- /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h /usr/include/stdlib.h \
- /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
- /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
- /usr/include/x86_64-linux-gnu/bits/wordsize.h \
- /usr/include/x86_64-linux-gnu/bits/long-double.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/include/x86_64-linux-gnu/bits/waitflags.h \
- /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
- /usr/include/x86_64-linux-gnu/bits/floatn.h \
- /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
- /usr/include/x86_64-linux-gnu/sys/types.h \
- /usr/include/x86_64-linux-gnu/bits/types.h \
- /usr/include/x86_64-linux-gnu/bits/typesizes.h \
- /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
- /usr/include/x86_64-linux-gnu/bits/stdint-intn.h /usr/include/endian.h \
- /usr/include/x86_64-linux-gnu/bits/endian.h \
- /usr/include/x86_64-linux-gnu/bits/byteswap.h \
- /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
- /usr/include/x86_64-linux-gnu/bits/uintn-identity.h \
- /usr/include/x86_64-linux-gnu/sys/select.h \
- /usr/include/x86_64-linux-gnu/bits/select.h \
- /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
- /usr/include/x86_64-linux-gnu/bits/select2.h \
- /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
- /usr/include/x86_64-linux-gnu/bits/sysmacros.h \
- /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
- /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
- /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
- /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h /usr/include/assert.h \
- event.h ev.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h \
- /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
- /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
- /usr/include/signal.h /usr/include/x86_64-linux-gnu/bits/signum.h \
- /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
- /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
- /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
- /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
- /usr/include/x86_64-linux-gnu/bits/sigaction.h \
- /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
- /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
- /usr/include/x86_64-linux-gnu/sys/ucontext.h \
- /usr/include/x86_64-linux-gnu/bits/sigstack.h \
- /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
- /usr/include/x86_64-linux-gnu/bits/sigthread.h \
- /usr/include/x86_64-linux-gnu/sys/stat.h \
- /usr/include/x86_64-linux-gnu/bits/stat.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/x86_64-linux-gnu/sys/time.h
+event.lo: event.c \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdc-predef.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc/aarch64-ca53-linux-gnu/8.4.0/include/stddef.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdlib.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/libc-header-start.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/features.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/cdefs.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/wordsize.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/long-double.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs-lp64.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/waitflags.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/waitstatus.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/floatn.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/floatn-common.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/timesize.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/typesizes.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/time64.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/clock_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/clockid_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/time_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/timer_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdint-intn.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/endian.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/endian.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/byteswap.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/uintn-identity.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/select.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/select.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sigset_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__sigset_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_timeval.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_timespec.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/pthreadtypes.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/thread-shared-types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/pthreadtypes-arch.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/alloca.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdlib-bsearch.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdlib-float.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/assert.h \
+ event.h ev.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/string.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/locale_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__locale_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/strings.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/signal.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/signum.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/signum-generic.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sig_atomic_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/siginfo_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__sigval_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/siginfo-arch.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/siginfo-consts.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sigval_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sigevent_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigevent-consts.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigaction.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigcontext.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/sigcontext.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/linux/types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/int-ll64.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/bitsperlong.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/bitsperlong.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/linux/posix_types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/linux/stddef.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/posix_types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/posix_types.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/stack_t.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/ucontext.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/procfs.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/time.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/user.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs-id.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs-prregset.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs-extra.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigstack.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/ss_flags.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_sigstack.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigthread.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/signal_ext.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/stat.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stat.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/time.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/time.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_tm.h \
+ /opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_itimerspec.h
 
-/usr/include/stdc-predef.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdc-predef.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/lib/gcc/aarch64-ca53-linux-gnu/8.4.0/include/stddef.h:
 
-/usr/include/stdlib.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/stdlib.h:
 
-/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/libc-header-start.h:
 
-/usr/include/features.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/features.h:
 
-/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/cdefs.h:
 
-/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/wordsize.h:
 
-/usr/include/x86_64-linux-gnu/bits/long-double.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/long-double.h:
 
-/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs.h:
 
-/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/gnu/stubs-lp64.h:
 
-/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/waitflags.h:
 
-/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/waitstatus.h:
 
-/usr/include/x86_64-linux-gnu/bits/floatn.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/floatn.h:
 
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/floatn-common.h:
 
-/usr/include/x86_64-linux-gnu/sys/types.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/types.h:
 
-/usr/include/x86_64-linux-gnu/bits/types.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types.h:
 
-/usr/include/x86_64-linux-gnu/bits/typesizes.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/timesize.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/typesizes.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/time64.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/time_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/clock_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/clockid_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/time_t.h:
 
-/usr/include/endian.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/timer_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/endian.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdint-intn.h:
 
-/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/endian.h:
 
-/usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/endian.h:
 
-/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/byteswap.h:
 
-/usr/include/x86_64-linux-gnu/sys/select.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/uintn-identity.h:
 
-/usr/include/x86_64-linux-gnu/bits/select.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/select.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/select.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sigset_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__sigset_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_timeval.h:
 
-/usr/include/x86_64-linux-gnu/bits/select2.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_timespec.h:
 
-/usr/include/x86_64-linux-gnu/sys/sysmacros.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/pthreadtypes.h:
 
-/usr/include/x86_64-linux-gnu/bits/sysmacros.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/thread-shared-types.h:
 
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/pthreadtypes-arch.h:
 
-/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/alloca.h:
 
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdlib-bsearch.h:
 
-/usr/include/alloca.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stdlib-float.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib.h:
-
-/usr/include/assert.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/assert.h:
 
 event.h:
 
 ev.h:
 
-/usr/include/string.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/string.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/locale_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__locale_t.h:
 
-/usr/include/strings.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/strings.h:
 
-/usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/signal.h:
 
-/usr/include/x86_64-linux-gnu/bits/string_fortified.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/signum.h:
 
-/usr/include/signal.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/signum-generic.h:
 
-/usr/include/x86_64-linux-gnu/bits/signum.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sig_atomic_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/signum-generic.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/siginfo_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/__sigval_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/siginfo-arch.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/siginfo-consts.h:
 
-/usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sigval_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/sigevent_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/sigval_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigevent-consts.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigaction.h:
 
-/usr/include/x86_64-linux-gnu/bits/sigevent-consts.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigcontext.h:
 
-/usr/include/x86_64-linux-gnu/bits/sigaction.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/sigcontext.h:
 
-/usr/include/x86_64-linux-gnu/bits/sigcontext.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/linux/types.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/types.h:
 
-/usr/include/x86_64-linux-gnu/sys/ucontext.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/types.h:
 
-/usr/include/x86_64-linux-gnu/bits/sigstack.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/int-ll64.h:
 
-/usr/include/x86_64-linux-gnu/bits/ss_flags.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/bitsperlong.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/bitsperlong.h:
 
-/usr/include/x86_64-linux-gnu/bits/sigthread.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/linux/posix_types.h:
 
-/usr/include/x86_64-linux-gnu/sys/stat.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/linux/stddef.h:
 
-/usr/include/x86_64-linux-gnu/bits/stat.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm/posix_types.h:
 
-/usr/include/time.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/asm-generic/posix_types.h:
 
-/usr/include/x86_64-linux-gnu/bits/time.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/stack_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/ucontext.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/procfs.h:
 
-/usr/include/x86_64-linux-gnu/sys/time.h:
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/time.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/user.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs-id.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs-prregset.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/procfs-extra.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigstack.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/ss_flags.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_sigstack.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/sigthread.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/signal_ext.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/sys/stat.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/stat.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/time.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/time.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_tm.h:
+
+/opt/aarch64-ca53-linux-gnueabihf-8.4.01/aarch64-ca53-linux-gnu/sysroot/usr/include/bits/types/struct_itimerspec.h:

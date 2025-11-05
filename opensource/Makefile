@@ -1,5 +1,6 @@
 SUBDIRS_y+=libev-4.33
-SUBDIRS_y+=jansson-2.7
+#SUBDIRS_y+=jansson-2.7
+SUBDIRS_y+=jansson-2.13
 DEBUGSUBDIRS = $(addsuffix .debug, $(SUBDIRS_y))
 RELEASESUBDIRS = $(addsuffix .release, $(SUBDIRS_y))
 CLEANSUBDIRS = $(addsuffix .clean, $(SUBDIRS_y))
@@ -7,14 +8,17 @@ DISTCLEANSUBDIRS = $(addsuffix .distclean, $(SUBDIRS_y))
 INSTALLSUBDIRS = $(addsuffix .install, $(SUBDIRS_y))
 
 .PHONY: $(SUBDIRS_y) $(DEBUGSUBDIRS) $(RELEASESUBDIRS) $(INSTALLSUBDIRS) \
-	$(CLEANSUBDIRS)
+	$(CLEANSUBDIRS) $(DISTCLEANSUBDIRS)
 
 all: $(SUBDIRS_y)
 
 clean:	$(CLEANSUBDIRS)
 	@rm -rf *.o *.so *.a
 
-distclean: $(DISTCLEANDIRS)
+distclean: $(DISTCLEANSUBDIRS)
+
+$(DISTCLEANSUBDIRS):
+	@cd $(basename $@) && make distclean
 	
 $(SUBDIRS_y):
 	@echo
