@@ -8,6 +8,7 @@
 #include <sys/sem.h>
 #include <sys/shm.h>
 #include <sys/msg.h>
+#include <unistd.h>
 
 #include "mod_ipc.h"
 #ifdef DEBUG
