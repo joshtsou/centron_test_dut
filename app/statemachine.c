@@ -3,6 +3,7 @@
 #include<unistd.h>
 #include<stdbool.h>
 #include "statemachine.h"
+#include "mod_sscmd.h"
 
 bool isRun;
 
@@ -39,6 +40,6 @@ int statemachine_run(statemachine_t *statemachine) {
 void statemachine_main(statemachine_t *statemachine) {
     do {
         if(statemachine_run(statemachine)) continue;
-        //if(statemachine_mod_handler_run(statemachine, STATEMACHINE_SUCCESS, STATEMACHINE_FAILED)) continue;
+        if(mod_sscmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
     }while(isRun);
 }

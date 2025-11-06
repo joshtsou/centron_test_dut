@@ -1,6 +1,6 @@
 SUBDIRS_y+=libev-4.33
-#SUBDIRS_y+=jansson-2.7
-SUBDIRS_y+=jansson-2.13
+SUBDIRS_y+=jansson-2.7
+#SUBDIRS_y+=jansson-2.13
 DEBUGSUBDIRS = $(addsuffix .debug, $(SUBDIRS_y))
 RELEASESUBDIRS = $(addsuffix .release, $(SUBDIRS_y))
 CLEANSUBDIRS = $(addsuffix .clean, $(SUBDIRS_y))

@@ -1,10 +1,9 @@
-OBJS += mod_ccmd.o mod_sscmd.o
+OBJS += mod_ccmd.o mod_sscmd.o mod_ipc.o
 LDFLAGS += -O2 -lev -ljansson -L$(OUTDIR)/lib
 
 .PHONY: $(BINDIR)
 
 all: $(OBJS)
-	cp *.h $(OUTDIR)/include
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
