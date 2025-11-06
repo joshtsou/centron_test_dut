@@ -17,6 +17,16 @@
 #define YKDEBUG(args...)
 #endif
 
+#ifndef PDEBUG
+#ifdef DEBUG
+#define PDEBUG(fmt, ...) do { \
+        printf("[%s:%d] "fmt"\n",__FILE__, __LINE__, ##__VA_ARGS__); \
+    } while(0);
+#else
+#define PDEBUG(args...)  
+#endif
+#endif
+
 IPC_Socket* IPC_Create_Server_Adv(char *path, int nListenCnt)
 {
     IPC_Socket *s = NULL;
@@ -176,4 +186,3 @@ IPC_Socket * IPC_Server_Accept(IPC_Socket *ser, unsigned int flag)
     strcpy(s->name, "*client*");
     return s;
 }
-

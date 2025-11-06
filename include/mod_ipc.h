@@ -1,11 +1,16 @@
 #ifndef _MOD_IPC_
 #define _MOD_IPC_
+#include "ev.h"
+
+#define IPC_SOCKET_CHECK(ipc) (ipc && IPC_Select_Object(ipc) > 0)
+#define H1N1_SSCMD_MAGIC_SYNC	0x12345678
 
 typedef struct IPC_Socket
 {
     char name[128];
     int fd;
 } IPC_Socket;
+
 #define UNIX_SOCKET_LISTEN_CNT_DFL	32
 
 IPC_Socket* IPC_Create_Server_Adv(char *path, int nListenCnt);

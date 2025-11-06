@@ -1,18 +1,19 @@
 #ifndef _MOD_SSCMD_H
 #define _MOD_SSCMD_H
-#include "mod_ipc.h"
 #include "statemachine.h"
+#include <pthread.h>
 
 #define MEDIA_SOCKET			"/tmp/ipc-media"
 #define VIDEO_SOURCE_CHANNEL_NUMBER 8
 #define CHT_VIDEO_SOURCE_STREAM_NUMBER 2
 #define MAX_CONNECTION_NUMBER (VIDEO_SOURCE_CHANNEL_NUMBER * CHT_VIDEO_SOURCE_STREAM_NUMBER)
 
-typedef struct connection {
-    IPC_Socket *ipc;
-    int channel;
-    int stream;
-} conn_t;
+struct h1n1_sscmd_header
+{
+    int sync;	// magic sync information
+    int cmd;	// command follows H1N1_SSCMD
+    int length; // data length not including size of this header
+};
 
 typedef enum 
 {
