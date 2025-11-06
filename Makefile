@@ -1,29 +1,32 @@
 export PWD=$(shell pwd)
 export ROOT_DIR=$(PWD)
-export CC=gcc
-export AR=ar
-export CROSS_HOST
 SUBDIRS += $(ROOT_DIR)/opensource
 SUBDIRS += $(ROOT_DIR)/mods
 SUBDIRS += $(ROOT_DIR)/app
-
 CLEANSUBDIRS=$(addsuffix .clean, $(SUBDIRS))
 export OUTDIR=$(ROOT_DIR)/out
 export MODDIR=$(ROOT_DIR)/mods
 export PKG_INSTALL_DIR=$(OUTDIR)
-export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing
 
-#export CROSS_PATH=/opt/aarch64-ca53-linux-gnueabihf-8.4.01
-#export CROSS_LIB=$(CROSS_PATH)/lib
-#export LD_LIBRARY_PATH=$(CROSS_LIB)
-#export CROSS_COMPILE=$(CROSS_PATH)/usr/bin/aarch64-ca53-linux-gnu-
-#export CROSS_HOST=aarch64-ca53-linux-gnu
-#export CC=$(CROSS_COMPILE)gcc
-#export CXX=$(CROSS_COMPILE)g++
-#export AR=$(CROSS_COMPILE)ar
-#export STRIP=$(CROSS_COMPILE)strip
-#export LD=$(CROSS_COMPILE)ld
-#export RANLIB=$(CROSS_COMPILE)ranlib
+
+CROSS = y
+ifeq ($(CROSS), y)
+	export CROSS_PATH=/opt/arm/arm-ca53-linux-gnueabihf-6.4
+	export CROSS_COMPILE=$(CROSS_PATH)/usr/bin/arm-ca53-linux-gnueabihf-
+	export CROSS_HOST=arm-ca53-linux-gnueabihf
+	export CC=$(CROSS_COMPILE)gcc
+	export CXX=$(CROSS_COMPILE)g++
+	export AR=$(CROSS_COMPILE)ar
+	export STRIP=$(CROSS_COMPILE)strip
+	export LD=$(CROSS_COMPILE)ld
+	export RANLIB=$(CROSS_COMPILE)ranlib
+	export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing -march=armv8-a -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize -fno-builtin -fno-common -DDEBUG
+else
+	export CROSS_HOST=
+	export CC=gcc
+	export AR=ar
+	export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing -DDEBUG
+endif
 
 .PHONY: $(SUBDIRS) $(CLEANSUBDIRS)
 

@@ -28,6 +28,9 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
                             PDEBUG("MOD SSCMD CONNECT IPC ERROR, channel: %d, stream: %d", ch, s);
                             is_conn_err |= 1;
                         }
+                        else {
+                            TDEBUG("MOD SSCMD IPC CONNECT SUCCESS, channel: %d, stream: %d", ch, s);
+                        }
                     }
                 }
             }while(0);

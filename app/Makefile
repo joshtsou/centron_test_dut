@@ -1,6 +1,6 @@
 TARGET=centron_test_dut
 OBJS += statemachine.o socket.o main.o $(MODDIR)/mod_ccmd.o $(MODDIR)/mod_sscmd.o $(MODDIR)/mod_ipc.o
-LDFLAGS += -O2 -lev -ljansson -lpthread -L$(OUTDIR)/lib
+LDFLAGS += -O2 -lev -ljansson -lpthread -lm -L$(OUTDIR)/lib
 BINDIR = $(OUTDIR)/bin
 
 .PHONY: $(BINDIR)
