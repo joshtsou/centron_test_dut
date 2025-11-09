@@ -4,7 +4,7 @@
 #include <pthread.h>
 
 #define MEDIA_SOCKET			"/tmp/ipc-media"
-#define VIDEO_SOURCE_CHANNEL_NUMBER 8
+#define VIDEO_SOURCE_CHANNEL_NUMBER 1
 #define CHT_VIDEO_SOURCE_STREAM_NUMBER 2
 #define MAX_CONNECTION_NUMBER (VIDEO_SOURCE_CHANNEL_NUMBER * CHT_VIDEO_SOURCE_STREAM_NUMBER)
 
@@ -26,6 +26,7 @@ typedef enum
 typedef enum
 {
     MOD_SSCMD_STATUS_START = MOD_SSCMD_IDX*MOD_STATUS_GROUP_NUM,
+    MOD_SSCMD_STATUS_RECV_THREAD,
     MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_SDP,
     MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_EX_PLAY,
     MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_EX_STOP,
@@ -94,6 +95,16 @@ struct h1n1_sscmd_media_stream
     int batch_length;	//seconds > 60
     char camid[33];
     int local_rec;
+};
+
+struct h1n1_sscmd_media_idx
+{
+    int type;
+    int length;
+    unsigned int offset;
+    unsigned int ttm;
+    int keyframe;
+    struct timeval timestamp;
 };
 
 int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int state_failed); 

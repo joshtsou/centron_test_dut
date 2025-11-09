@@ -28,7 +28,7 @@ int statemachine_run(statemachine_t *statemachine) {
             isRun = false;
             break;
         case STATEMACHINE_FAILED:
-            //printf("[STATE]: STATEMACHINE_FAILED\n");
+            printf("[STATE]: STATEMACHINE_FAILED\n");
             isRun = false;
             break;
         default:

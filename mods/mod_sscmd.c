@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<unistd.h>
 #include <pthread.h>
+#include <sys/select.h>
 #include "jansson.h"
 #include "ev.h"
 #include "main.h"
@@ -13,6 +15,7 @@ typedef struct connection {
     int stream;
     struct ev_loop *loop;
     ev_io rd_io;
+	char sdp_cache[1024];
     pthread_t conn_thread;
 } conn_t;
 
@@ -48,159 +51,97 @@ int h1n1_ss_request_command(conn_t *conn, int command, unsigned char *data, int 
 	}
 	return 0;
 }
-#if 0
-int h1n1_ss_ipc_read(struct connection *conn)
+#if 1
+int h1n1_ss_ipc_read(conn_t *conn)
 {
 	struct h1n1_sscmd_header hdr;
 	// int type = H1N1_SSCMD_REL_VID_FRAME_ACK;
 	//char buf[1024];
-	int n = IPC_FullRecv(conn->ss.ipc, (unsigned char *)&hdr, sizeof(hdr), 0);
-	PDEBUGG("recv %d bytes", n);
+	int n = IPC_FullRecv(conn->ipc, (unsigned char *)&hdr, sizeof(hdr), 0);
 	if(n <= 0 || n != sizeof(hdr))
 	{
 		// fixme: disconnec
-		PDEBUG("Ch%d%d streamer is disconnected, read=%d, header size=%d", conn->channel, conn->stream, n, sizeof(hdr));
-		h1n1_ss_drop(conn, "read fail", 0);
+		TDEBUG("RECV SSCMD header failed: len = %d, size not match. channel: %d, stream: %d, conn_fd: %d",n, conn->channel, conn->stream, conn->ipc->fd);
 		return -1;
 	}
 	else
 	{
-		PDEBUGG("Ch%d%d, sscmd sync=%x, cmd=%d, length=%d", conn->channel, conn->stream, hdr.sync, hdr.cmd, hdr.length);
-		ASSERT(hdr.cmd >= 0);
-		ASSERT(hdr.cmd < H1N1_SSCMD_MAX);
-		ASSERT(hdr.sync == H1N1_SSCMD_MAGIC_SYNC);
+		if(hdr.cmd < 0 || hdr.cmd >= H1N1_SSCMD_MAX) {
+			TDEBUG("SSCMD Header error: cmd out of range");
+			return -1;
+		}
+		if(hdr.sync != H1N1_SSCMD_MAGIC_SYNC) {
+			TDEBUG("SSCMD Header error: masgic number not correct");
+			return -1;
+		}
 		struct h1n1_sscmd_media_idx idx;
 		switch(hdr.cmd)
 		{
 		case H1N1_SSCMD_ACK:
+			TDEBUG("RECV H1N1_SSCMD_ACK, channel: %d, stream: %d", conn->channel, conn->stream);
 			break;
 		case H1N1_SSCMD_MEDIA_IDX:
-			ASSERT(hdr.length == sizeof(idx));
-			n = IPC_FullRecv(conn->ss.ipc, (unsigned char *)&idx, hdr.length, 0);
-			PDEBUGG("recv %d bytes", n);
-			PDEBUGG("Ch%d%d ss get %s media", conn->channel, conn->stream, type == H1N1_SSCMD_REL_VID_FRAME_ACK ? "Video" : "Audio");
-			
-			if (conn->ss.stat == H1N1_IPC_STAT_WAIT_ACK) {
+			TDEBUG("RECV H1N1_SSCMD_MEDIA_IDX, channel: %d, stream: %d", conn->channel, conn->stream);
+			//ASSERT(hdr.length == sizeof(idx));
+			n = IPC_FullRecv(conn->ipc, (unsigned char *)&idx, hdr.length, 0);
+			{
 				unsigned char* data_buffer = malloc(idx.length);
-				PDEBUGG("Ch%d%d H1N1_IPC_STAT_WAIT_ACK and drop frame", conn->channel, conn->stream);
-				assert(data_buffer);
-				n = IPC_FullRecv(conn->ss.ipc, (unsigned char *)data_buffer, idx.length, 0);
+				n = IPC_FullRecv(conn->ipc, (unsigned char *)data_buffer, idx.length, 0);
 				if(n != idx.length)
 				{
-					PDEBUG("Ch%d%d streamer is disconnected, read=%d, header size=%d", conn->channel, conn->stream, n, idx.length);
+					TDEBUG("H1N1_SSCMD_MEDIA_IDX idx len error.");
 					free(data_buffer);
 					return -1;
 				}
-				assert(idx.length > 0);
 				free(data_buffer);
 			}
-			else {
-				ASSERT(!conn->data_buffer);
-				conn->data_buffer = malloc(idx.length);
-				assert(conn->data_buffer);
-				idx.offset = conn->data_buffer;
-				n = IPC_FullRecv(conn->ss.ipc, (unsigned char *)idx.offset, idx.length, 0);
-				PDEBUGG("recv %d bytes", n);
-				if(n != idx.length)
-				{
-					PDEBUG("Ch%d%d streamer is disconnected, read=%d, header size=%d", conn->channel, conn->stream, n, idx.length);
-					h1n1_ss_drop(conn, "read fail", 0);
-					free(conn->data_buffer);
-					conn->data_buffer = NULL;
-					return -1;
-				}
-				// read succussfuly
-				// PDEBUG("Ch%d%d ss get %s media idx=%d, len=%d, off=%u(%p), conn.stat=%d, ss.stat=%d", conn->channel, conn->stream, type == H1N1_SSCMD_REL_VID_FRAME_ACK ? "Video" : "Audio", idx.type, idx.length, idx.offset, idx.offset, conn->stat, conn->ss.stat);
-				assert(idx.length > 0);
-				conn->last_src_alive_time = time(NULL);
-				conn->timeout_count = 0;
-
-				if(h1n1_conn_sendto_media_data(conn, &idx, H1N1_MEDIA_STREAM_TYPE_LIVE) != 0)
-				{
-					PDEBUGG("sendto media failed due to network or frame error");
-				}
-				if(conn->streaming_mode == H1N1_VIDEO_EVENTKEY_CAM_VIDEO)
-				{
-					if(rsdvd_backup_is_ready_to_start(conn->rsdvd) && conn->rsdvd_length <= H1N1_RSDVD_BUFFER_SIZE 
-						&& rsdvd_backup_push_frame(conn->rsdvd, H1N1_RSDVD_TYPE_MEDIA_FRAME, &idx, sizeof(idx), my_media_data_free, conn) == 0)
-					{
-						conn->rsdvd_length += idx.length;
-						if(conn->rsdvd_length > H1N1_RSDVD_BUFFER_SIZE)
-						{
-							struct rsdvd_header hdr;
-							hdr.event_time = conn->last_src_alive_time;
-							hdr.movie_time = 0;
-							rsdvd_backup_push_frame(conn->rsdvd, H1N1_RSDVD_TYPE_END, &hdr, sizeof(hdr), NULL, conn);
-							rsdvd_backup_end(conn->rsdvd);
-							rsdvd_backup_pop_last_ready(conn->rsdvd);
-						}
-					}
-					else
-					{
-						PDEBUGG("rsdvd frame loss");
-						free(conn->data_buffer);
-					}
-				}
-				else
-				{
-					free(conn->data_buffer);
-				}
-
-				conn->data_buffer = NULL;
-			}
-			// HonoStreamerReleaseFrame(obj, type);
-			// h1n1_ss_release_frame(conn, type);
-			//HonoStreamerReleaseFrame(obj, type);
-			PDEBUGG("idx process is over");
 			break;
 		case H1N1_SSCMD_SDP_ACK:
-			assert(sizeof(conn->sdp_cache) > hdr.length);
-			n = IPC_FullRecv(conn->ss.ipc, (unsigned char *)conn->sdp_cache, hdr.length, 0);
+			TDEBUG("RECV H1N1_SSCMD_SDP_ACK, channel: %d, stream: %d", conn->channel, conn->stream);
+			//assert(sizeof(conn->sdp_cache) > hdr.length);
+			n = IPC_FullRecv(conn->ipc, (unsigned char *)conn->sdp_cache, hdr.length, 0);
 			if(n != hdr.length)
 			{
-				PDEBUG("except %d bytes, real got= %d bytes", hdr.length, n);
-				PDEBUG("%s", conn->sdp_cache);
 				conn->sdp_cache[0] = 0;
 				break;
 			}
-			else if(conn->sdp_cache[0] == 0)
-			{
-				//not ready
-				break;
-			}
-			assert(n == hdr.length);
-			PDEBUG("Ch%d%d gets SDP:%s", conn->channel, conn->stream, conn->sdp_cache);
-			if(strstr(conn->sdp_cache, "AMR/8000"))
-				conn->audio_type = H1N1_MEDIA_AUDIO_TYPE_AMRNB;
-			if(strstr(conn->sdp_cache, "mode=AAC-hbr"))
-				conn->audio_type = H1N1_MEDIA_AUDIO_TYPE_AAC;
+			//assert(n == hdr.length);
+			TDEBUG("SDP:%s", conn->sdp_cache);
 			break;
 		case H1N1_SSCMD_MEDIA_ACK_FAIL:
 		case H1N1_SSCMD_MEDIA_ACK_TIMEOUT:
 			break;
 		case H1N1_SSCMD_MEDIA_ACK_EX_STOP:
-			PDEBUG("Ch%d%d recv H1N1_SSCMD_MEDIA_ACK_EX_STOP (stat=%d)", conn->channel, conn->stream, conn->ss.stat);
-			if (conn->ss.stat == H1N1_IPC_STAT_WAIT_ACK) {
-				conn->ss.transfer_stat = H1N1_IPC_STAT_READY;
-				//PDEBUG("Ch%d%d h1n1_ss_request_ex_play (%s)", conn->channel, conn->stream, __func__);
-				//h1n1_ss_request_ex_play(conn, conn->event_time, conn->movie_time);
-			}
+			TDEBUG("RECV H1N1_SSCMD_MEDIA_ACK_EX_STOP, channel: %d, stream: %d", conn->channel, conn->stream);
 			break;
 		default:
-			PDEBUG("Ch%d%d, unknown sscmd cmd=%d, sync=%x, length=%d", conn->channel, conn->stream, hdr.cmd, hdr.sync, hdr.length);
-			assert(0);
+			TDEBUG("RECV unknown sscmd cmd=%d, sync=%x, length=%d, channel: %d, stream: %d", hdr.cmd, hdr.sync, hdr.length, conn->channel, conn->stream);
+			//assert(0);
 		}
 	}
 	return 0;
 }
 #endif
 static void sscmd_recv_io_callback(struct ev_loop *loop, struct ev_io *w, int revents) {
-    conn_t *con = (conn_t*)w->data;
-    ev_io_stop(loop, w);
+	conn_t *con = (conn_t*)w->data;
+	int ret = 0;
+	// int ret = 0;
+	// fd_set rfds;
+	// FD_ZERO(&rfds);
+	// FD_SET(IPC_Select_Object(con->ipc), &rfds);
+	// ret = select(IPC_Select_Object(con->ipc) + 1, &rfds, NULL, NULL, NULL);
+	// if(ret>0 && FD_ISSET(IPC_Select_Object(con->ipc), &rfds)) {
+		TDEBUG("SSCMD RECVing ... channel: %d, stream: %d, conn_fd: %d, active_fd: %d", con->channel, con->stream, con->ipc->fd, w->fd);
+		ret = h1n1_ss_ipc_read(con);
+	// }
+    //ev_io_stop(loop, w);
+	if(ret == -1)
+		ev_io_stop(loop, w);
 }
 
 void* mod_sscmd_recv_thread(void *arg) {
     conn_t *recv_conn = (conn_t*)arg;
+	TDEBUG("SSCMD READY TO RECV, channel: %d., stream: %d", recv_conn->channel, recv_conn->stream);
     if(!IPC_SOCKET_CHECK(recv_conn->ipc))
 	{
 		PDEBUG("Ch%d stream%d fail due to ipc recv", recv_conn->channel, recv_conn->stream);
@@ -220,18 +161,8 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
     switch(statemachine->stat) {
         case MOD_SSCMD_STATUS_START:
             do {
-                for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
-                    for(int s=0; s<CHT_VIDEO_SOURCE_STREAM_NUMBER; s++) {
-                        int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
-                        if(!ev_is_active(&conn[idx].rd_io)) {
-                            pthread_create(&conn[idx].conn_thread, NULL, mod_sscmd_recv_thread, &conn[idx]);
-                            pthread_detach(conn[idx].conn_thread);
-                        }
-                    }
-                }
                 if(mod_sscmd_is_init)
                     break;
-                //connect ss
                 for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
                     for(int s=0; s<CHT_VIDEO_SOURCE_STREAM_NUMBER; s++) {
                         int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
@@ -254,10 +185,25 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
             }
             else {
                 mod_sscmd_is_init = 1;
-                statemachine->stat = MOD_SSCMD_STATUS_START + ctx->ipc_header.cmd;
+                //statemachine->stat = MOD_SSCMD_STATUS_START + ctx->ipc_header.cmd;
+				statemachine->stat = MOD_SSCMD_STATUS_RECV_THREAD;
             }
             break;
+		case MOD_SSCMD_STATUS_RECV_THREAD:
+			TDEBUG("MOD_SSCMD_STATUS_RECV_THREAD");
+			for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
+				for(int s=0; s<CHT_VIDEO_SOURCE_STREAM_NUMBER; s++) {
+					int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
+					if(!ev_is_active(&conn[idx].rd_io)) {
+						pthread_create(&conn[idx].conn_thread, NULL, mod_sscmd_recv_thread, &conn[idx]);
+						pthread_detach(conn[idx].conn_thread);
+					}
+				}
+			}
+			statemachine->stat = MOD_SSCMD_STATUS_RECV_THREAD + ctx->ipc_header.cmd;
+			break;
         case MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_SDP:
+			sleep(5);
             TDEBUG("MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_SDP");
             is_err = 0;
             for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -8,9 +9,8 @@
 #include <sys/sem.h>
 #include <sys/shm.h>
 #include <sys/msg.h>
-#include <unistd.h>
-
 #include "mod_ipc.h"
+
 #ifdef DEBUG
 #define YKDEBUG(fmt, ...) fprintf(stderr, "[%s:%s:%d]" fmt "\n", __FILE__, __func__, __LINE__, ## __VA_ARGS__)
 #else
@@ -149,8 +149,10 @@ int IPC_FullRecv(IPC_Socket *s, unsigned char *data, size_t expect_read_len, uns
 	while(total_read != expect_read_len)
 	{
 		int read_len = recv(s->fd, data + total_read, expect_read_len - total_read, flag);
-		if (read_len <= 0 ) // should not happen in blocking mode && errno != EINTR && errno != EAGAIN)
+		if (read_len <= 0 ) {// should not happen in blocking mode && errno != EINTR && errno != EAGAIN)
+            PDEBUG("recv return %d", read_len);
 			return -1;
+        }
 		total_read += read_len;
 	}
 	return total_read;
