@@ -6,6 +6,10 @@
 #include "jansson.h"
 #include "ev.h"
 
+#define MCAST_GRP "239.255.0.1"
+#define MCAST_PORT 5000
+#define REPLY_PORT 5001
+
 #ifndef PDEBUG
 #ifdef DEBUG
 #define PDEBUG(fmt, ...) do { \

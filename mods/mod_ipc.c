@@ -123,7 +123,7 @@ int IPC_Send(IPC_Socket *s, unsigned char *data, size_t len)
 {
     int n;
 
-    if((n = send(s->fd, data, len, 0)) == -1)
+    if((n = send(s->fd, data, len, MSG_NOSIGNAL)) == -1)
     {
         YKDEBUG("Send command socket error");
     }

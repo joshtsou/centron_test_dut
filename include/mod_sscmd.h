@@ -7,6 +7,8 @@
 #define VIDEO_SOURCE_CHANNEL_NUMBER 1
 #define CHT_VIDEO_SOURCE_STREAM_NUMBER 2
 #define MAX_CONNECTION_NUMBER (VIDEO_SOURCE_CHANNEL_NUMBER * CHT_VIDEO_SOURCE_STREAM_NUMBER)
+#define POST_BUFFER 10
+#define BATCH_LENGTH 270
 
 struct h1n1_sscmd_header
 {
@@ -14,6 +16,13 @@ struct h1n1_sscmd_header
     int cmd;	// command follows H1N1_SSCMD
     int length; // data length not including size of this header
 };
+
+typedef enum
+{
+    CMD_EX_PLAY_DATA_NC_STATUS=0,
+    CMD_EX_PLAY_DATA_REC_MODE,
+    CMD_EX_PLAY_DATA_SD_STATUS
+} CMD_EX_PLAY_DATA_IDX;
 
 typedef enum 
 {

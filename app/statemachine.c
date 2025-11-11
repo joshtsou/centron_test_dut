@@ -4,6 +4,7 @@
 #include<stdbool.h>
 #include "statemachine.h"
 #include "mod_sscmd.h"
+#include "main.h"
 
 bool isRun;
 
@@ -16,11 +17,11 @@ void statemachine_init(statemachine_t *statemachine, void *data) {
 int statemachine_run(statemachine_t *statemachine) {
     switch(statemachine->stat) {
         case STATEMACHINE_START:
-            printf("[STATE]: STATEMACHINE_START\n");
+            PDEBUG("[STATE]: STATEMACHINE_START");
             statemachine->stat = STATEMACHINE_SLEEP;
             break;
         case STATEMACHINE_SLEEP:
-            printf("[STATE]: STATEMACHINE_SLEEP\n");
+            PDEBUG("[STATE]: STATEMACHINE_SLEEP");
             usleep(500000);
             break;
         case STATEMACHINE_SUCCESS:
@@ -28,7 +29,7 @@ int statemachine_run(statemachine_t *statemachine) {
             isRun = false;
             break;
         case STATEMACHINE_FAILED:
-            printf("[STATE]: STATEMACHINE_FAILED\n");
+            PDEBUG("[STATE]: STATEMACHINE_FAILED");
             isRun = false;
             break;
         default:

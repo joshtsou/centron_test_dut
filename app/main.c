@@ -11,24 +11,23 @@
 #include "mod_ccmd.h"
 #include "mod_sscmd.h"
 
-#define MCAST_GRP "239.255.0.1"
-#define MCAST_PORT 5000
-
 static main_ctx g_ctx = {0};
 
 static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents) {
     main_ctx *ctx = (main_ctx*)ev_userdata(loop);
+    //main_ctx *ctx = (main_ctx*)w->data;
     char *buf=NULL;
+    json_error_t error;
     do {
         if(socket_mcast_recvfrom(w->fd, &ctx->ipc_header, sizeof(ipc_header_t), &ctx->remote_addr) == -1)
             break;
-        buf = calloc(ctx->ipc_header.len, 1);
+        buf = calloc(1, ctx->ipc_header.len+1);
         if(socket_mcast_recvfrom(w->fd, buf, ctx->ipc_header.len, &ctx->remote_addr) == -1)
              break;
         TDEBUG("MOD: %d, CMD: %d", ctx->ipc_header.mod, ctx->ipc_header.cmd);
         TDEBUG("%s", buf);
-        if((ctx->data = json_string(buf)) == NULL) {
-            PDEBUG("json string error.");
+        if((ctx->data = json_loads(buf, 0, &error)) == NULL) {
+            PDEBUG("json string error. %s", error.text);
             break;
         }
         switch(ctx->ipc_header.mod) {
@@ -38,7 +37,7 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
                 break;
             }
             default:
-                PDEBUG("error: module not exist.");
+                TDEBUG("error: module not exist.");
                 break;
         }
     } while(0);
@@ -51,6 +50,7 @@ void* recv_thread(void *arg) {
     ctx->loop = ev_loop_new(EVBACKEND_EPOLL | EVFLAG_NOENV);
     ev_io_init(&ctx->rd_io, cmd_read_callback, ctx->multi_sockfd, EV_READ);
     ev_io_start(ctx->loop, &ctx->rd_io);
+    //ctx->rd_io.data = ctx;
     ev_set_userdata(ctx->loop, ctx);
     ev_run(ctx->loop, 0);
     return 0;
