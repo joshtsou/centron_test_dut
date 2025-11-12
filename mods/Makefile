@@ -1,4 +1,4 @@
-OBJS += mod_ccmd.o mod_sscmd.o mod_ipc.o
+OBJS += mod_ccmd.o mod_sscmd.o mod_ipc.o mod.o
 LDFLAGS += -O2 -lev -ljansson -L$(OUTDIR)/lib
 
 .PHONY: $(BINDIR)

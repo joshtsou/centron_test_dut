@@ -40,6 +40,7 @@ typedef struct _main_ctx {
     json_t *data;
     struct sockaddr_in remote_addr;
     void* statemachine;
+    char mod_name[64];
     pthread_mutex_t lock;
     pthread_t multi_recv_thread;
 } main_ctx;

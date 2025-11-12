@@ -1,47 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<unistd.h>
+#include <unistd.h>
 #include <pthread.h>
 #include <sys/select.h>
 #include "jansson.h"
 #include "ev.h"
-#include "main.h"
 #include "mod_sscmd.h"
 #include "mod_ipc.h"
 #include "socket.h"
+#include "mod.h"
 
 typedef struct connection {
     IPC_Socket *ipc;
     int channel;
     int stream;
-    struct ev_loop *loop;
     ev_io rd_io;
 	char sdp_cache[1024];
-	char test_report[1024];
+	char mod_res[1024];
     pthread_t conn_thread;
 } conn_t;
 
 static int mod_sscmd_is_init = 0;
 static conn_t conn[MAX_CONNECTION_NUMBER] = {0};
-
-void mod_ssmcd_test_result_append(char *input, char *target, int input_size, int target_size) {
-	char header[64] = "[result sscmd] ";
-	char tail[64] = "\n";
-	do {
-		if(!input || !target) {
-			PDEBUG("test result append error.");
-			break;
-		}
-		int remain_size = target_size - strlen(target) - strlen(header) - strlen(tail) - 1;
-		if(remain_size < input_size) {
-			PDEBUG("test result append error: no space.");
-			break;
-		}
-		strncat(target, header, remain_size);
-		strncat(target, input, remain_size);
-		strncat(target, tail, remain_size);
-	}while(0);
-}
 
 int h1n1_ss_request_command(conn_t *conn, int command, unsigned char *data, int datalen)
 {
@@ -72,7 +52,7 @@ int h1n1_ss_request_command(conn_t *conn, int command, unsigned char *data, int 
 	return 0;
 }
 #if 1
-int h1n1_ss_ipc_read(conn_t *conn)
+int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 {
 	struct h1n1_sscmd_header hdr;
 	// int type = H1N1_SSCMD_REL_VID_FRAME_ACK;
@@ -152,34 +132,23 @@ int h1n1_ss_ipc_read(conn_t *conn)
 #endif
 static void sscmd_recv_io_callback(struct ev_loop *loop, struct ev_io *w, int revents) {
 	conn_t *con = (conn_t*)w->data;
+	main_ctx *ctx = (main_ctx*)ev_userdata(loop);
 	int ret = 0;
-	// int ret = 0;
-	// fd_set rfds;
-	// FD_ZERO(&rfds);
-	// FD_SET(IPC_Select_Object(con->ipc), &rfds);
-	// ret = select(IPC_Select_Object(con->ipc) + 1, &rfds, NULL, NULL, NULL);
-	// if(ret>0 && FD_ISSET(IPC_Select_Object(con->ipc), &rfds)) {
-		TDEBUG("SSCMD RECVing ... channel: %d, stream: %d, conn_fd: %d, active_fd: %d", con->channel, con->stream, con->ipc->fd, w->fd);
-		ret = h1n1_ss_ipc_read(con);
-	// }
-    //ev_io_stop(loop, w);
+	PPDEBUG(ctx, con->mod_res, "SSCMD RECVing ... channel: %d, stream: %d, conn_fd: %d, active_fd: %d", con->channel, con->stream, con->ipc->fd, w->fd);
+	ret = h1n1_ss_ipc_read(con, ctx);
 	if(ret == -1)
 		ev_io_stop(loop, w);
 }
 
-void* mod_sscmd_recv_thread(void *arg) {
-    conn_t *recv_conn = (conn_t*)arg;
-    if(!IPC_SOCKET_CHECK(recv_conn->ipc))
+int mod_sscmd_recv_thread(conn_t *conn, main_ctx *ctx) {
+    if(!IPC_SOCKET_CHECK(conn->ipc))
 	{
-		PDEBUG("Ch%d stream%d fail due to ipc recv", recv_conn->channel, recv_conn->stream);
-		return 0;
+		PDEBUG("Ch%d stream%d fail due to ev_io init", conn->channel, conn->stream);
+		return -1;
 	}
-    recv_conn->loop = ev_loop_new(EVBACKEND_EPOLL | EVFLAG_NOENV);
-    ev_io_init(&recv_conn->rd_io, sscmd_recv_io_callback, IPC_Select_Object(recv_conn->ipc), EV_READ);
-    ev_io_start(recv_conn->loop, &recv_conn->rd_io);
-    recv_conn->rd_io.data = recv_conn;
-    ev_run(recv_conn->loop, 0);
-	PDEBUG("recv thread finished. channel: %d, stream: %d", recv_conn->channel, recv_conn->stream);
+	conn->rd_io.data = conn;
+    ev_io_init(&conn->rd_io, sscmd_recv_io_callback, IPC_Select_Object(conn->ipc), EV_READ);
+    ev_io_start(ctx->loop, &conn->rd_io);
     return 0;
 }
 
@@ -215,6 +184,7 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
             }
             else {
                 mod_sscmd_is_init = 1;
+				sprintf(ctx->mod_name, "sscmd");
                 //statemachine->stat = MOD_SSCMD_STATUS_START + ctx->ipc_header.cmd;
 				statemachine->stat = MOD_SSCMD_STATUS_RECV_THREAD;
             }
@@ -226,8 +196,9 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 					int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
 					if(!ev_is_active(&conn[idx].rd_io)) {
 						PDEBUG("recv thread created, ch:%d, stream:%d", ch, s);
-						pthread_create(&conn[idx].conn_thread, NULL, mod_sscmd_recv_thread, &conn[idx]);
-						pthread_detach(conn[idx].conn_thread);
+						mod_sscmd_recv_thread(&conn[idx], ctx);
+						// pthread_create(&conn[idx].conn_thread, NULL, mod_sscmd_recv_thread, &conn[idx]);
+						// pthread_detach(conn[idx].conn_thread);
 					}
 				}
 			}
@@ -342,18 +313,14 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
             break;
 		}
         case MOD_SSCMD_STATUS_SUCCESS:
+			usleep(500000);
             TDEBUG("MOD_SSCMD_STATUS_SUCCESS");
 			char success_message[128] = "\0";
-			sprintf(success_message, "MOD SSCMD SEND SUCCESS, CMD: %d", ctx->ipc_header.cmd);
-			ipc_header_t header;
-			header.mod = ctx->ipc_header.mod;
-			header.cmd = ctx->ipc_header.cmd;
-			header.len = strlen(success_message);
-			socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, &header, sizeof(ipc_header_t), &ctx->remote_addr);
-			socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, success_message, strlen(success_message), &ctx->remote_addr);
+			PPDEBUG(ctx, success_message, "MOD SSCMD SEND SUCCESS, CMD: %d", ctx->ipc_header.cmd);
             statemachine->stat = state_success;
             break;
         case MOD_SSCMD_STATUS_FAILED:
+			usleep(500000);
             TDEBUG("MOD_SSCMD_STATUS_FAILED");
 			socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, res_message, strlen(res_message), &ctx->remote_addr);
             statemachine->stat = state_failed;
