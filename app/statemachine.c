@@ -4,6 +4,7 @@
 #include<stdbool.h>
 #include "statemachine.h"
 #include "mod_sscmd.h"
+#include "mod_ptzcmd.h"
 #include "main.h"
 
 bool isRun;
@@ -25,11 +26,11 @@ int statemachine_run(statemachine_t *statemachine) {
             usleep(500000);
             break;
         case STATEMACHINE_SUCCESS:
-            //printf("[STATE]: STATEMACHINE_SUCCESS\n");
+            //PDEBUG("[STATE]: STATEMACHINE_SUCCESS");
             isRun = false;
             break;
         case STATEMACHINE_FAILED:
-            PDEBUG("[STATE]: STATEMACHINE_FAILED");
+            //PDEBUG("[STATE]: STATEMACHINE_FAILED");
             isRun = false;
             break;
         default:
@@ -42,5 +43,6 @@ void statemachine_main(statemachine_t *statemachine) {
     do {
         if(statemachine_run(statemachine)) continue;
         if(mod_sscmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
+        if(mod_ptzcmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
     }while(isRun);
 }

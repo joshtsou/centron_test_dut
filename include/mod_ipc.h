@@ -3,7 +3,6 @@
 #include "ev.h"
 
 #define IPC_SOCKET_CHECK(ipc) (ipc && IPC_Select_Object(ipc) > 0)
-#define H1N1_SSCMD_MAGIC_SYNC	0x12345678
 
 typedef struct IPC_Socket
 {

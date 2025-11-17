@@ -1,11 +1,22 @@
 #ifndef _MOD_H
 #define _MOD_H
 #include "main.h"
+#include "debug.h"
+
+#define MOD_STATUS_GROUP_NUM 10
+
+enum {
+    MOD_SSCMD_IDX = 1,
+    MOD_CCMD_IDX,
+    MOD_PTZ_IDX
+};
 
 #ifndef PPDEBUG
 #define PPDEBUG(ctx, buf, fmt, ...) \
 do { \
+    TDEBUG(fmt, ##__VA_ARGS__); \
     char temp[1024] = "\0"; \
+    buf[0] = '\0'; \
     sprintf(temp, fmt, ##__VA_ARGS__); \
     mod_result_append(ctx->mod_name, temp, strlen(temp), buf, sizeof(buf)); \
     mod_result_send(ctx, buf); \

@@ -3,6 +3,7 @@
 #include "main.h"
 #include "mod_ipc.h"
 #include "socket.h"
+#include "mod.h"
 
 void mod_result_send(main_ctx *ctx, char *str) {
 	ipc_header_t header;

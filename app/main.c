@@ -8,8 +8,10 @@
 #include "statemachine.h"
 #include "socket.h"
 #include "main.h"
-#include "mod_ccmd.h"
+#include "debug.h"
+#include "mod.h"
 #include "mod_sscmd.h"
+#include "mod_ptzcmd.h"
 
 static main_ctx g_ctx = {0};
 
@@ -18,6 +20,8 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
     //main_ctx *ctx = (main_ctx*)w->data;
     char *buf=NULL;
     json_error_t error;
+    if(ctx->data != NULL)
+        free(ctx->data);
     do {
         if(socket_mcast_recvfrom(w->fd, &ctx->ipc_header, sizeof(ipc_header_t), &ctx->remote_addr) == -1)
             break;
@@ -34,6 +38,11 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
             case MOD_SSCMD_IDX: {
                 statemachine_t *p_state = (statemachine_t*)ctx->statemachine;
                 p_state->stat = MOD_SSCMD_STATUS_START;
+                break;
+            }
+            case MOD_PTZ_IDX: {
+                statemachine_t *p_state = (statemachine_t*)ctx->statemachine;
+                p_state->stat = MOD_PTZCMD_STATUS_START;
                 break;
             }
             default:

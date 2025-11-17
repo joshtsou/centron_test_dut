@@ -8,7 +8,6 @@
 #include "mod_sscmd.h"
 #include "mod_ipc.h"
 #include "socket.h"
-#include "mod.h"
 
 typedef struct connection {
     IPC_Socket *ipc;
@@ -17,7 +16,6 @@ typedef struct connection {
     ev_io rd_io;
 	char sdp_cache[1024];
 	char mod_res[1024];
-    pthread_t conn_thread;
 } conn_t;
 
 static int mod_sscmd_is_init = 0;
@@ -55,14 +53,12 @@ int h1n1_ss_request_command(conn_t *conn, int command, unsigned char *data, int 
 int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 {
 	struct h1n1_sscmd_header hdr;
-	// int type = H1N1_SSCMD_REL_VID_FRAME_ACK;
-	//char buf[1024];
 	int n = IPC_FullRecv(conn->ipc, (unsigned char *)&hdr, sizeof(hdr), 0);
-	char test_result[1024] = "\0";
 	if(n <= 0 || n != sizeof(hdr))
 	{
 		// fixme: disconnec
-		TDEBUG("RECV SSCMD header failed: len = %d, size not match. channel: %d, stream: %d, conn_fd: %d",n, conn->channel, conn->stream, conn->ipc->fd);
+		//TDEBUG("RECV SSCMD header failed: len = %d, size not match. channel: %d, stream: %d, conn_fd: %d",n, conn->channel, conn->stream, conn->ipc->fd);
+		PPDEBUG(ctx, conn->mod_res, "RECV SSCMD header failed: len = %d, size not match. channel: %d, stream: %d, conn_fd: %d",n, conn->channel, conn->stream, conn->ipc->fd);
 		return -1;
 	}
 	else
@@ -79,7 +75,7 @@ int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 		switch(hdr.cmd)
 		{
 		case H1N1_SSCMD_ACK:
-			TDEBUG("RECV H1N1_SSCMD_ACK, channel: %d, stream: %d", conn->channel, conn->stream);
+			PPDEBUG(ctx, conn->mod_res, "RECV H1N1_SSCMD_ACK, channel: %d, stream: %d", conn->channel, conn->stream);
 			break;
 		case H1N1_SSCMD_MEDIA_IDX:
 			TDEBUG("RECV H1N1_SSCMD_MEDIA_IDX, channel: %d, stream: %d", conn->channel, conn->stream);
@@ -90,18 +86,17 @@ int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 				n = IPC_FullRecv(conn->ipc, (unsigned char *)data_buffer, idx.length, 0);
 				if(n != idx.length)
 				{
-					TDEBUG("H1N1_SSCMD_MEDIA_IDX recv error. data length is not match idx.length");
+					PPDEBUG(ctx, conn->mod_res, "H1N1_SSCMD_MEDIA_IDX recv error. data length is not match idx.length");
 					free(data_buffer);
 					return -1;
 				}
 				else {
-					sprintf(test_result, "H1N1_SSCMD_MEDIA_IDX recv ok, channel:%d, stream: %d", conn->channel, conn->stream);
-					TDEBUG("%s" ,test_result);
+					PPDEBUG(ctx, conn->mod_res, "H1N1_SSCMD_MEDIA_IDX recv ok, channel:%d, stream: %d" ,conn->channel, conn->stream);
 				}
 				free(data_buffer);
 			}
 			else {
-				TDEBUG("H1N1_SSCMD_MEDIA_IDX recv error. recv length not match idx structure size");
+				PPDEBUG(ctx, conn->mod_res, "H1N1_SSCMD_MEDIA_IDX recv error. recv length not match idx structure size");
 			}
 			break;
 		case H1N1_SSCMD_SDP_ACK:
@@ -114,16 +109,16 @@ int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 				break;
 			}
 			//assert(n == hdr.length);
-			TDEBUG("SDP:%s", conn->sdp_cache);
+			PPDEBUG(ctx, conn->mod_res, "RECV SDP:%s", conn->sdp_cache);
 			break;
 		case H1N1_SSCMD_MEDIA_ACK_FAIL:
 		case H1N1_SSCMD_MEDIA_ACK_TIMEOUT:
 			break;
 		case H1N1_SSCMD_MEDIA_ACK_EX_STOP:
-			TDEBUG("RECV H1N1_SSCMD_MEDIA_ACK_EX_STOP, channel: %d, stream: %d", conn->channel, conn->stream);
+			PPDEBUG(ctx, conn->mod_res, "RECV H1N1_SSCMD_MEDIA_ACK_EX_STOP, channel: %d, stream: %d", conn->channel, conn->stream);
 			break;
 		default:
-			TDEBUG("RECV unknown sscmd cmd=%d, sync=%x, length=%d, channel: %d, stream: %d", hdr.cmd, hdr.sync, hdr.length, conn->channel, conn->stream);
+			PPDEBUG(ctx, conn->mod_res, "RECV unknown sscmd cmd=%d, sync=%x, length=%d, channel: %d, stream: %d", hdr.cmd, hdr.sync, hdr.length, conn->channel, conn->stream);
 			//assert(0);
 		}
 	}
@@ -134,7 +129,7 @@ static void sscmd_recv_io_callback(struct ev_loop *loop, struct ev_io *w, int re
 	conn_t *con = (conn_t*)w->data;
 	main_ctx *ctx = (main_ctx*)ev_userdata(loop);
 	int ret = 0;
-	PPDEBUG(ctx, con->mod_res, "SSCMD RECVing ... channel: %d, stream: %d, conn_fd: %d, active_fd: %d", con->channel, con->stream, con->ipc->fd, w->fd);
+	//PPDEBUG(ctx, con->mod_res, "SSCMD RECVing ... channel: %d, stream: %d, conn_fd: %d, active_fd: %d", con->channel, con->stream, con->ipc->fd, w->fd);
 	ret = h1n1_ss_ipc_read(con, ctx);
 	if(ret == -1)
 		ev_io_stop(loop, w);
@@ -155,7 +150,6 @@ int mod_sscmd_recv_thread(conn_t *conn, main_ctx *ctx) {
 int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int state_failed) {
     main_ctx *ctx = (main_ctx*)statemachine->data;
     int is_err = 0;
-	char res_message[128] = "\0";
     switch(statemachine->stat) {
         case MOD_SSCMD_STATUS_START:
             do {
@@ -179,7 +173,6 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
             }while(0);
             if(is_err) {
                 //statemachine->stat = MOD_SSCMD_STATUS_START + ctx->ipc_header.cmd;
-				sprintf(res_message, "MOD_SSCMD CONNECT IPC ERROR");
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             }
             else {
@@ -197,8 +190,6 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 					if(!ev_is_active(&conn[idx].rd_io)) {
 						PDEBUG("recv thread created, ch:%d, stream:%d", ch, s);
 						mod_sscmd_recv_thread(&conn[idx], ctx);
-						// pthread_create(&conn[idx].conn_thread, NULL, mod_sscmd_recv_thread, &conn[idx]);
-						// pthread_detach(conn[idx].conn_thread);
 					}
 				}
 			}
@@ -221,7 +212,6 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
                 }
             }
             if(is_err) {
-				sprintf(res_message, "MOD_SSCMD H1N1_SSCMD_MEDIA_SDP ERROR");
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
                 statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
@@ -253,7 +243,6 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 				}
 			}
 			if(is_err) {
-				sprintf(res_message, "MOD SSCMD H1N1_SSCMD_MEDIA_IDX ERROR");
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
                 statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
@@ -275,7 +264,6 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 				}
 			}
 			if(is_err) {
-				sprintf(res_message, "MOD SSCMD H1N1_SSCMD_MEDIA_EX_STOP ERROR");
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
                 statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
@@ -304,7 +292,6 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 				}
 			}
 			if(is_err) {
-				sprintf(res_message, "MOD SSCMD H1N1_SSCMD_MEDIA_NC_STATE ERROR");
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
                 statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
@@ -315,14 +302,13 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
         case MOD_SSCMD_STATUS_SUCCESS:
 			usleep(500000);
             TDEBUG("MOD_SSCMD_STATUS_SUCCESS");
-			char success_message[128] = "\0";
-			PPDEBUG(ctx, success_message, "MOD SSCMD SEND SUCCESS, CMD: %d", ctx->ipc_header.cmd);
+			// char success_message[128] = "\0";
+			// PPDEBUG(ctx, success_message, "MOD SSCMD SEND SUCCESS, CMD: %d", ctx->ipc_header.cmd);
             statemachine->stat = state_success;
             break;
         case MOD_SSCMD_STATUS_FAILED:
 			usleep(500000);
             TDEBUG("MOD_SSCMD_STATUS_FAILED");
-			socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, res_message, strlen(res_message), &ctx->remote_addr);
             statemachine->stat = state_failed;
             break;
         default:
