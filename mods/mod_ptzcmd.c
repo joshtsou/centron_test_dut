@@ -20,6 +20,8 @@ typedef struct connection {
 static conn_t conn;
 static int mod_ptzcmd_is_init = 0;
 static char* direction_map[9] = {"left", "upleft", "up", "upright", "right", "downright", "down", "downleft", "home"};
+static char* zoom_map[2] = {"in", "out"};
+static char* focus_map[2] = {"minus", "plus"};
 
 int ipc_ptz_request_recv(char *result, int size) {
     int ret = -1;
@@ -210,18 +212,78 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
             break;
         }
         case MOD_PTZCMD_STATUS_ZOOM: {
+            statemachine->stat = MOD_PTZCMD_STATUS_FAILED;
+            int channel = atoi(json_string_value(json_object_get(json_array_get(ctx->data, MOD_PTZ_CMD_ZOOM_DATA_CHANNEL), "value")));
+            int zoom = atoi(json_string_value(json_object_get(json_array_get(ctx->data, MOD_PTZ_CMD_ZOOM_DATA_INOUT), "value")));
+            do {
+                json_t *jp_actions = json_object_get(conn.jrequest, "actions");
+                json_t *jp_channel = json_object_get(conn.jrequest, "channel");
+                json_t *jp_zoom_val = json_array();
+                json_t *jp_zoom = json_object();
+                if(!jp_actions || !jp_channel || !jp_zoom_val || !jp_zoom)
+                    break;
+                if(zoom > 1 || zoom < 0)
+                    break;
+                {
+                    json_array_append_new(jp_zoom_val, json_string(zoom_map[zoom]));
+                    json_array_append_new(jp_zoom_val, json_integer(500));
+                    json_object_set_new(jp_zoom, "ptzzoom", jp_zoom_val);
+                    json_array_append_new(jp_actions, jp_zoom);
+                }
+                {
+                    json_integer_set(jp_channel, channel);
+                }
+                if(ipc_ptz_request_send(conn.jrequest) != 0) {
+                    PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_ZOOM);
+                    break;
+                }
+                statemachine->stat = MOD_PTZCMD_STATUS_SUCCESS;
+            }while(0);
             break;
         }
         case MOD_PTZCMD_STATUS_FOCUS: {
+            statemachine->stat = MOD_PTZCMD_STATUS_FAILED;
+            int channel = atoi(json_string_value(json_object_get(json_array_get(ctx->data, MOD_PTZ_CMD_FOCUS_DATA_CHANNEL), "value")));
+            int focus = atoi(json_string_value(json_object_get(json_array_get(ctx->data, MOD_PTZ_CMD_FOCUS_DATA_PLUS_MINUS), "value")));
+            do {
+                json_t *jp_actions = json_object_get(conn.jrequest, "actions");
+                json_t *jp_channel = json_object_get(conn.jrequest, "channel");
+                json_t *jp_focus_val = json_array();
+                json_t *jp_focus = json_object();
+                if(!jp_actions || !jp_channel || !jp_focus_val || !jp_focus)
+                    break;
+                if(focus > 1 || focus < 0)
+                    break;
+                {
+                    json_array_append_new(jp_focus_val, json_string(focus_map[focus]));
+                    json_array_append_new(jp_focus_val, json_integer(500));
+                    json_object_set_new(jp_focus, "focusadj", jp_focus_val);
+                    json_array_append_new(jp_actions, jp_focus);
+                }
+                {
+                    json_integer_set(jp_channel, channel);
+                }
+                if(ipc_ptz_request_send(conn.jrequest) != 0) {
+                    PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_FOCUS);
+                    break;
+                }
+                statemachine->stat = MOD_PTZCMD_STATUS_SUCCESS;
+            }while(0);
             break;
         }
         case MOD_PTZCMD_STATUS_SUCCESS: {
+            if(conn.jrequest) {
+                json_decref(conn.jrequest);
+            }
             statemachine->stat = state_success;
             break;
         }
         case MOD_PTZCMD_STATUS_FAILED: {
             IPC_Destroy(conn.ipc);
             mod_ptzcmd_is_init = 0;
+            if(conn.jrequest) {
+                json_decref(conn.jrequest);
+            }
             statemachine->stat = state_failed;
             break;
         }
