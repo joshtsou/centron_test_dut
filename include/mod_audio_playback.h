@@ -5,6 +5,8 @@
 
 #define PLAYBACK_SOCKET			"/tmp/ipc-aout-0-0"
 #define PLAY_BACK_AUDIO_PATH    "/tmp/scale_10s_stereo_16k_16bit.wav"
+#define IPCMSG_TYPE_REQUEST_AUDIO_OUT           0x0001
+#define IPCMSG_TYPE_RESPONSE_CODE               0x8fff
 
 typedef struct audio_attr {
 //	char dev_node[64]; /**< device node */
@@ -14,9 +16,28 @@ typedef struct audio_attr {
 //	unsigned long period_frames; /**< sample frames */
 } audio_attr;
 
+typedef struct ipcmsg_hdr {
+    unsigned short type;
+    unsigned short length;
+} ipcmsg_hdr_t;
+
+typedef struct ipcmsg_resp_code {
+    unsigned int code;
+} ipcmsg_resp_code_t;
+
+enum {
+    IPCMSG_RESP_CODE_OK = 0,
+    IPCMSG_RESP_CODE_FAIL,
+    IPCMSG_RESP_CODE_NOMEM,
+    IPCMSG_RESP_CODE_FORMAT_ERR,
+    IPCMSG_RESP_CODE_BUTT,
+    IPCMSG_RESP_CODE_TOOMANY
+};
+
 typedef enum
 {
     MOD_AUDIO_PLAYBACK_STATUS_START = MOD_AUDIO_PLAYBACK_IDX*MOD_STATUS_GROUP_NUM,
+    MOD_AUDIO_PLAYBACK_STATUS_CHECK,
     MOD_AUDIO_PLAYBACK_STATUS_SEND,
     MOD_AUDIO_PLAYBACK_STATUS_SUCCESS,
     MOD_AUDIO_PLAYBACK_STATUS_FAILED

@@ -14,6 +14,7 @@
 #include "mod_ptzcmd.h"
 #include "mod_snapshot.h"
 #include "mod_audio_playback.h"
+#include "mod_ccmd.h"
 
 static main_ctx g_ctx = {0};
 

@@ -5,6 +5,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <errno.h>
 #include "mod_audio_playback.h"
 #include "mod_ipc.h"
 #include "socket.h"
@@ -12,9 +13,11 @@
 
 typedef struct connection {
     int ipc_sd;
-    //int channel;
+    int times;
     ev_io rd_io;
 	char mod_res[1024];
+    int head_length;
+    struct audio_attr file_attr;
     //char *mod_recv_data;
     //int recv_len;
 } conn_t;
@@ -80,6 +83,60 @@ exit:
 	return ret;
 }
 
+static int fullwrite(int to, char *data, int len, int timeout)
+{
+	int total = 0;
+	time_t t1 = time(NULL), t2;
+	while (total != len)
+	{
+		int rlen = write(to, data + total, len - total);
+		if (rlen <= 0 && errno != EINTR && errno != EAGAIN)
+			return -1;
+		total += rlen;
+		t2 = time(NULL);
+		if (t2 - t1 > timeout)
+			return -1;
+		if (t1 > t2)
+			t1 = t2; // time offset
+	}
+	return total;
+}
+
+int audio_play_get_frame_size(struct audio_attr *attr)
+{
+	return attr->rate / 125 * 4 * attr->channels * attr->format / 8;
+}
+
+int handle_playback_pcm(int cs, const char* path, int times, struct audio_attr *pfile_attr, int head_length)
+{
+    int read, sent, size = audio_play_get_frame_size(pfile_attr);
+    char *buffer = (char*)malloc(size);
+    int all = 0;
+    int ret = -1;
+
+    FILE *fp = fopen(path, "rb");
+
+    if(!fp)
+        goto end;
+    if(head_length)
+        fseek(fp, head_length, SEEK_SET);
+    do {
+        read = fread(buffer, 1, size, fp);
+        if(read) {
+            if((sent = fullwrite(cs, buffer, read, 10)) == -1) {
+                goto end;
+            }
+            all += sent;
+            //TDEBUG("audio callback sending... send total: %d bytes", all);
+        }
+    }while(read);
+    ret = 0;
+end:
+    if(buffer)
+        free(buffer);
+    return ret;
+}
+
 int mod_audio_playback_socket_connect(conn_t *conn) {
     int ret = -1;
     struct sockaddr_un un;
@@ -111,8 +168,25 @@ int mod_audio_playback_socket_connect(conn_t *conn) {
 }
 
 int ipc_audio_playback_request_recv(conn_t *conn, main_ctx* ctx) {
-    
-    return 0;
+    ipcmsg_hdr_t hdr;
+    ipcmsg_resp_code_t rc;
+    int ret = -1;
+    int r = recv(conn->ipc_sd, &hdr, sizeof(hdr), MSG_WAITALL);
+    do {
+        if(r != sizeof(hdr) || hdr.type != IPCMSG_TYPE_RESPONSE_CODE) {
+            PPDEBUG(ctx, conn->mod_res, "recv header error.");
+            break;
+        }
+        r = recv(conn->ipc_sd, &rc, sizeof(rc), MSG_WAITALL);
+        if(r != sizeof(rc) || rc.code != IPCMSG_RESP_CODE_OK) {
+            PPDEBUG(ctx, conn->mod_res, "recv resp code error");
+            break;
+        }
+        statemachine_t *pstate = ctx->statemachine;
+        pstate->stat = MOD_AUDIO_PLAYBACK_STATUS_SEND;
+        ret = 0;
+    }while(0);
+    return ret;
 }
 
 static void audio_playback_reciever_io_callback(struct ev_loop *loop, struct ev_io *w, int revents) {
@@ -145,8 +219,6 @@ int mod_audio_playback_reciever_create(conn_t *conn, main_ctx *ctx) {
 
 int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_success, int state_failed) {
     main_ctx *ctx = (main_ctx*)statemachine->data;
-    struct audio_attr file_attr;
-    int head_length = 0;
     int type_id = DECODE_PCM;
     int is_err = 0;
 
@@ -173,31 +245,63 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
             }
             break;
         }
-        case MOD_AUDIO_PLAYBACK_STATUS_SEND: {
+        case MOD_AUDIO_PLAYBACK_STATUS_CHECK: {
             statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
-            int ret = 0;
-            int times = atoi(json_string_value(json_object_get(json_array_get(ctx->data, MOD_AUDIO_PLAYBACK_CMD_SET_PARAM_DATA_TIMES), "value")));
+            conn.times = atoi(json_string_value(json_object_get(json_array_get(ctx->data, MOD_AUDIO_PLAYBACK_CMD_SET_PARAM_DATA_TIMES), "value")));
+            char *req_pcm = "application/audio-pcm";
+
             do {
                 FILE *fp = fopen(PLAY_BACK_AUDIO_PATH, "rb");
                 if(!fp) {
                     PPDEBUG(ctx, conn.mod_res, "open audio file failed");
                     break;
                 }
-                if(audio_play_analyze_header(fp, &file_attr, &head_length, type_id) != 0) {
+                if(audio_play_analyze_header(fp, &conn.file_attr, &conn.head_length, type_id) != 0) {
                     PPDEBUG(ctx, conn.mod_res, "analyze audio file failed");
                     break;
                 }
-                PPDEBUG(ctx, conn.mod_res, "analyze audio file success. format: %d, channel: %d, rate: %d", file_attr.format, file_attr.channels, file_attr.rate);
+                PPDEBUG(ctx, conn.mod_res, "analyze audio file success. format: %d, channel: %d, rate: %d", conn.file_attr.format, conn.file_attr.channels, conn.file_attr.rate);
                 fclose(fp);
-                statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_SUCCESS;
+                ipcmsg_hdr_t hdr = {.type = IPCMSG_TYPE_REQUEST_AUDIO_OUT, .length = strlen(req_pcm) + 1};
+                write(conn.ipc_sd, &hdr, sizeof(hdr));
+                write(conn.ipc_sd, req_pcm, hdr.length);
+                statemachine->stat = STATEMACHINE_SLEEP;
             }while(0);
             break;
         }
+        case MOD_AUDIO_PLAYBACK_STATUS_SEND: {
+            PPDEBUG(ctx, conn.mod_res, "sending audio playback...");
+            int ret = -1;
+            do {
+                if(handle_playback_pcm(conn.ipc_sd, PLAY_BACK_AUDIO_PATH, conn.times, &conn.file_attr, conn.head_length) == -1) {
+                    PPDEBUG(ctx, conn.mod_res, "send audio playback error");
+                    break;
+                }else {
+                    PPDEBUG(ctx, conn.mod_res, "send audio playback success, time remain: %d", conn.times - 1);
+                }
+                ret = 0;
+            }while(0);
+            if(ret != 0) {
+                statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
+            }else {
+                if(--conn.times) {
+                    statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_SEND;
+                }
+                else {
+                    statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_SUCCESS;
+                }
+            } 
+            break;
+        }
         case MOD_AUDIO_PLAYBACK_STATUS_SUCCESS: {
+            PPDEBUG(ctx, conn.mod_res, "test finish, success");
+            close(conn.ipc_sd);
+            conn.ipc_sd = 0;
             statemachine->stat = state_success;
             break;
         }
         case MOD_AUDIO_PLAYBACK_STATUS_FAILED: {
+            PPDEBUG(ctx, conn.mod_res, "test finish, failed");
             close(conn.ipc_sd);
             conn.ipc_sd = 0;
             statemachine->stat = state_failed;
