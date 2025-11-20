@@ -1,5 +1,5 @@
 TARGET=centron_test_dut
-OBJS += statemachine.o socket.o main.o $(MODDIR)/mod_ccmd.o $(MODDIR)/mod_sscmd.o $(MODDIR)/mod_ipc.o $(MODDIR)/mod_ptzcmd.o $(MODDIR)/mod.o
+OBJS += statemachine.o socket.o main.o $(MODDIR)/mod_ccmd.o $(MODDIR)/mod_sscmd.o $(MODDIR)/mod_ipc.o $(MODDIR)/mod_ptzcmd.o $(MODDIR)/mod_snapshot.o $(MODDIR)/mod_audio_playback.o $(MODDIR)/mod.o
 LDFLAGS += -O2 -lev -ljansson -lpthread -lm -L$(OUTDIR)/lib
 BINDIR = $(OUTDIR)/bin
 

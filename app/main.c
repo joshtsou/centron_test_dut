@@ -12,6 +12,8 @@
 #include "mod.h"
 #include "mod_sscmd.h"
 #include "mod_ptzcmd.h"
+#include "mod_snapshot.h"
+#include "mod_audio_playback.h"
 
 static main_ctx g_ctx = {0};
 
@@ -43,6 +45,16 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
             case MOD_PTZ_IDX: {
                 statemachine_t *p_state = (statemachine_t*)ctx->statemachine;
                 p_state->stat = MOD_PTZCMD_STATUS_START;
+                break;
+            }
+            case MOD_SNAPSHOT_IDX: {
+                statemachine_t *p_state = (statemachine_t*)ctx->statemachine;
+                p_state->stat = MOD_SNAPSHOT_STATUS_START;
+                break;
+            }
+            case MOD_AUDIO_PLAYBACK_IDX: {
+                statemachine_t *p_state = (statemachine_t*)ctx->statemachine;
+                p_state->stat = MOD_AUDIO_PLAYBACK_STATUS_START;
                 break;
             }
             default:

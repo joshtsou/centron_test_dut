@@ -5,6 +5,8 @@
 #include "statemachine.h"
 #include "mod_sscmd.h"
 #include "mod_ptzcmd.h"
+#include "mod_snapshot.h"
+#include "mod_audio_playback.h"
 #include "main.h"
 
 bool isRun;
@@ -44,5 +46,7 @@ void statemachine_main(statemachine_t *statemachine) {
         if(statemachine_run(statemachine)) continue;
         if(mod_sscmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
         if(mod_ptzcmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
+        if(mod_snapshot_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
+        if(mod_audio_playback_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
     }while(isRun);
 }

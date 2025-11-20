@@ -8,7 +8,9 @@
 enum {
     MOD_SSCMD_IDX = 1,
     MOD_CCMD_IDX,
-    MOD_PTZ_IDX
+    MOD_PTZ_IDX,
+    MOD_SNAPSHOT_IDX,
+    MOD_AUDIO_PLAYBACK_IDX
 };
 
 #ifndef PPDEBUG
