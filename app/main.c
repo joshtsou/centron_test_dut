@@ -43,6 +43,11 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
                 p_state->stat = MOD_SSCMD_STATUS_START;
                 break;
             }
+            case MOD_CCMD_IDX: {
+                statemachine_t *p_state = (statemachine_t*)ctx->statemachine;
+                p_state->stat = MOD_CCMD_STATUS_START;
+                break;
+            }
             case MOD_PTZ_IDX: {
                 statemachine_t *p_state = (statemachine_t*)ctx->statemachine;
                 p_state->stat = MOD_PTZCMD_STATUS_START;

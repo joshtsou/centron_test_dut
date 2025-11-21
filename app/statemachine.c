@@ -46,6 +46,7 @@ void statemachine_main(statemachine_t *statemachine) {
     do {
         if(statemachine_run(statemachine)) continue;
         if(mod_sscmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
+        if(mod_ccmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
         if(mod_ptzcmd_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
         if(mod_snapshot_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;
         if(mod_audio_playback_handler_run(statemachine, STATEMACHINE_SLEEP, STATEMACHINE_FAILED)) continue;

@@ -1,0 +1,1527 @@
+{
+  "VideoSource": {
+    "0": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "PowerFrequency": 60,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 1875,
+          "Enabled": false,
+          "Left": 4031,
+          "Name": "",
+          "Right": 5750,
+          "Sensitivity": 88,
+          "Threshold": 88,
+          "Top": 125
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2046,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 84,
+          "Threshold": 86,
+          "Top": 20
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4046,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 20
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 5125,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 3375,
+            "Name": "privacy1",
+            "Right": 5265,
+            "Top": 3208
+          },
+          "1": {
+            "Bottom": 4062,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2078,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2166
+          },
+          "2": {
+            "Bottom": 4062,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4078,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2166
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9501",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch1-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch1-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "1": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 100,
+          "Name": "",
+          "Right": 2000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2100,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4100,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 4100,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 100,
+            "Name": "privacy1",
+            "Right": 2000,
+            "Top": 2200
+          },
+          "1": {
+            "Bottom": 4100,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2100,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2200
+          },
+          "2": {
+            "Bottom": 4100,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4100,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2200
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9502",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch2-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch2-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "2": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 100,
+          "Name": "",
+          "Right": 2000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2100,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4100,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 4100,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 100,
+            "Name": "privacy1",
+            "Right": 2000,
+            "Top": 2200
+          },
+          "1": {
+            "Bottom": 4100,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2100,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2200
+          },
+          "2": {
+            "Bottom": 4100,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4100,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2200
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9503",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch3-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch3-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "3": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 100,
+          "Name": "",
+          "Right": 2000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2100,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4100,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 4100,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 100,
+            "Name": "privacy1",
+            "Right": 2000,
+            "Top": 2200
+          },
+          "1": {
+            "Bottom": 4100,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2100,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2200
+          },
+          "2": {
+            "Bottom": 4100,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4100,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2200
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9504",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch4-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch4-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "4": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 100,
+          "Name": "",
+          "Right": 2000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2100,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4100,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 4100,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 100,
+            "Name": "privacy1",
+            "Right": 2000,
+            "Top": 2200
+          },
+          "1": {
+            "Bottom": 4100,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2100,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2200
+          },
+          "2": {
+            "Bottom": 4100,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4100,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2200
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9505",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch5-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch5-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "5": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 100,
+          "Name": "",
+          "Right": 2000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2100,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4100,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 4100,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 100,
+            "Name": "privacy1",
+            "Right": 2000,
+            "Top": 2200
+          },
+          "1": {
+            "Bottom": 4100,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2100,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2200
+          },
+          "2": {
+            "Bottom": 4100,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4100,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2200
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9506",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch6-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch6-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "6": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 100,
+          "Name": "",
+          "Right": 2000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2100,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4100,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 4100,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 100,
+            "Name": "privacy1",
+            "Right": 2000,
+            "Top": 2200
+          },
+          "1": {
+            "Bottom": 4100,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2100,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2200
+          },
+          "2": {
+            "Bottom": 4100,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4100,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2200
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9507",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch7-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch7-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "7": {
+      "Enabled": true,
+      "ISP": {
+        "Brightness": 0,
+        "Capability": {
+          "BrightnessMax": 1,
+          "BrightnessMin": -1,
+          "Color": [
+            "Auto",
+            "Color",
+            "Mono"
+          ],
+          "ContrastMax": 1,
+          "ContrastMin": -1,
+          "DeNoiseLevelMax": 1,
+          "DeNoiseLevelMin": 0,
+          "DeNoiseMode": [
+            "Auto",
+            "Manual"
+          ],
+          "HueMax": 1,
+          "HueMin": -1,
+          "SaturationMax": 1,
+          "SaturationMin": -1,
+          "SharpnessMax": 1,
+          "SharpnessMin": -1
+        },
+        "Color": "Auto",
+        "Contrast": 0,
+        "DeNoiseLevel": 0,
+        "DeNoiseMode": "Auto",
+        "Default": {
+          "Brightness": 0,
+          "Color": "Auto",
+          "Contrast": 0,
+          "DeNoiseLevel": 0,
+          "DeNoiseMode": "Auto",
+          "Hue": 0,
+          "Saturation": 0,
+          "Sharpness": 0
+        },
+        "Hue": 0,
+        "Saturation": 0,
+        "Sharpness": 0
+      },
+      "Image": {
+        "DeInterlace": true,
+        "DetectedType": "1080P30",
+        "FPS": 30,
+        "Flip": false,
+        "Mirror": false,
+        "Progressive": true,
+        "Resolution": "1920x1080",
+        "Status": "DEACTIVE_NO_LOST"
+      },
+      "Motion": {
+        "0": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 100,
+          "Name": "",
+          "Right": 2000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "1": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 2100,
+          "Name": "",
+          "Right": 4000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "2": {
+          "Bottom": 2000,
+          "Enabled": false,
+          "Left": 4100,
+          "Name": "",
+          "Right": 6000,
+          "Sensitivity": 50,
+          "Threshold": 50,
+          "Top": 100
+        },
+        "Count": 3,
+        "Enabled": false,
+        "MaxCount": 3
+      },
+      "Overlay": {
+        "PrivacyMask": {
+          "0": {
+            "Bottom": 4100,
+            "Color": "red",
+            "Enabled": false,
+            "Left": 100,
+            "Name": "privacy1",
+            "Right": 2000,
+            "Top": 2200
+          },
+          "1": {
+            "Bottom": 4100,
+            "Color": "green",
+            "Enabled": false,
+            "Left": 2100,
+            "Name": "privacy2",
+            "Right": 4000,
+            "Top": 2200
+          },
+          "2": {
+            "Bottom": 4100,
+            "Color": "blue",
+            "Enabled": false,
+            "Left": 4100,
+            "Name": "privacy3",
+            "Right": 6000,
+            "Top": 2200
+          },
+          "Count": 3,
+          "Enabled": false,
+          "MaxCount": 3
+        },
+        "Text": {
+          "AlertEnabled": false,
+          "AlertText": "攝影機不支援此解析度 Resolution Error",
+          "BGColor": "black",
+          "Color": "white",
+          "DateEnabled": true,
+          "DateFormat": "mm/dd/yy",
+          "DateTimePosition": "right-bottom",
+          "Enabled": true,
+          "FontSize": "small",
+          "Text": "d4a42500d4d9508",
+          "TextEnabled": true,
+          "TextPosition": "right-bottom",
+          "TimeEnabled": true,
+          "TimeFormat": 24,
+          "Transparent": 50
+        }
+      },
+      "VideoProfile": {
+        "0": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 3,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 9,
+            "IFramePeriod": 3,
+            "MaxBitRate": 4096,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch8-1",
+          "Resolution": "320x240"
+        },
+        "1": {
+          "Codec": "H264",
+          "Enabled": true,
+          "FPS": 30,
+          "H264": {
+            "BitRate": 120,
+            "GOPLength": 90,
+            "IFramePeriod": 3,
+            "MaxBitRate": 1024,
+            "MaxQuality": 10,
+            "MinQuality": 0,
+            "Quality": 5,
+            "RateControl": "cbr",
+            "Version": "H264"
+          },
+          "MJPEG": {
+            "MaxBitRate": 4096,
+            "Quality": 5
+          },
+          "Name": "ch8-2",
+          "Resolution": "320x240"
+        },
+        "Count": 2,
+        "MaxCount": 2
+      }
+    },
+    "Count": 8,
+    "MaxCount": 8
+  }
+}

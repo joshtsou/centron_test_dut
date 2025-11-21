@@ -1,0 +1,78 @@
+{
+  "AudioSource": {
+    "0": {
+      "AudioProfile": {
+        "0": {
+          "AAC": {
+            "BitRate": "16k"
+          },
+          "Codec": "AAC",
+          "Enabled": true,
+          "Name": ""
+        },
+        "Count": 1,
+        "MaxCount": 1
+      },
+      "Enabled": true,
+      "Gain": 0,
+      "SampleRate": 8000,
+      "Type": "line in"
+    },
+    "1": {
+      "AudioProfile": {
+        "0": {
+          "AAC": {
+            "BitRate": "16k"
+          },
+          "Codec": "AAC",
+          "Enabled": true,
+          "Name": ""
+        },
+        "Count": 1,
+        "MaxCount": 1
+      },
+      "Enabled": true,
+      "Gain": 0,
+      "SampleRate": 8000,
+      "Type": "line in"
+    },
+    "2": {
+      "AudioProfile": {
+        "0": {
+          "AAC": {
+            "BitRate": "16k"
+          },
+          "Codec": "AAC",
+          "Enabled": true,
+          "Name": ""
+        },
+        "Count": 1,
+        "MaxCount": 1
+      },
+      "Enabled": true,
+      "Gain": 0,
+      "SampleRate": 8000,
+      "Type": "line in"
+    },
+    "3": {
+      "AudioProfile": {
+        "0": {
+          "AAC": {
+            "BitRate": "16k"
+          },
+          "Codec": "AAC",
+          "Enabled": true,
+          "Name": ""
+        },
+        "Count": 1,
+        "MaxCount": 1
+      },
+      "Enabled": true,
+      "Gain": 0,
+      "SampleRate": 8000,
+      "Type": "line in"
+    },
+    "Count": 4,
+    "MaxCount": 4
+  }
+}

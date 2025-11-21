@@ -225,13 +225,13 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
     switch(statemachine->stat) {
         case MOD_AUDIO_PLAYBACK_STATUS_START: {
             do {
+                sprintf(ctx->mod_name, "audio playback");
                 if(conn.ipc_sd)
                     break;
                 if(mod_audio_playback_socket_connect(&conn)!=0) {
                     PPDEBUG(ctx, conn.mod_res, "socket connection failed");
                     is_err = 1;
                 }
-                sprintf(ctx->mod_name, "audio playback");
             }while(0);
             if(is_err) {
                 statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
@@ -249,8 +249,11 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
             statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
             conn.times = atoi(json_string_value(json_object_get(json_array_get(ctx->data, MOD_AUDIO_PLAYBACK_CMD_SET_PARAM_DATA_TIMES), "value")));
             char *req_pcm = "application/audio-pcm";
-
             do {
+                if(conn.times < 1 || conn.times > 5) {
+                    PPDEBUG(ctx, conn.mod_res,"you got to play too few or too many times, failed. times: %d", conn.times);
+                    break;
+                }
                 FILE *fp = fopen(PLAY_BACK_AUDIO_PATH, "rb");
                 if(!fp) {
                     PPDEBUG(ctx, conn.mod_res, "open audio file failed");

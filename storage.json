@@ -1,0 +1,38 @@
+{
+  "Storage": {
+    "0": {
+      "AutoDiskCleanup": true,
+      "AutoFormat": true,
+      "CleanSize": 100,
+      "FileKeepDays": 0,
+      "FileSystem": "ext4",
+      "FreeSize": 0,
+      "MinRemainSize": 200,
+      "Path": "/mnt/SD0",
+      "RemainPercentage": 5,
+      "RemainSize": 200,
+      "Status": "ACTIVE",
+      "TotalSize": 0,
+      "Type": "SD0",
+      "UsedSize": 0
+    },
+    "1": {
+      "AutoDiskCleanup": false,
+      "AutoFormat": true,
+      "CleanSize": 100,
+      "FileKeepDays": 0,
+      "FileSystem": "ext4",
+      "FreeSize": 0,
+      "MinRemainSize": 200,
+      "Path": "/mnt/USB0",
+      "RemainPercentage": 5,
+      "RemainSize": 200,
+      "Status": "DEACTIVE",
+      "TotalSize": 0,
+      "Type": "USB",
+      "UsedSize": 0
+    },
+    "Count": 2,
+    "MaxCount": 5
+  }
+}

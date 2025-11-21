@@ -110,6 +110,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
     switch(statemachine->stat) {
         case MOD_PTZCMD_STATUS_START: {
             do {
+                sprintf(ctx->mod_name, "ptzcmd");
                 if(mod_ptzcmd_is_init)
                     break;
                 conn.ipc = IPC_Create_Client(PTZ_SOCKET);
@@ -118,7 +119,6 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                     is_err = 1;
                     break;   
                 }
-                sprintf(ctx->mod_name, "ptzcmd");
             }while(0);
             if(!ev_is_active(&conn.rd_io)) {
                 PDEBUG("recv thread created");

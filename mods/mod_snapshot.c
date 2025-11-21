@@ -119,13 +119,13 @@ int mod_snapshot_handler_run(statemachine_t *statemachine, int state_success, in
     switch(statemachine->stat) {
         case MOD_SNAPSHOT_STATUS_START: {
             do {
+                sprintf(ctx->mod_name, "snapshot");
                 if(mod_snapshot_is_init)
                     break;
                 if(mod_snapshot_socket_connect(&conn)!=0) {
                     PPDEBUG(ctx, conn.mod_res, "socket connection failed");
                     is_err = 1;
                 }
-                sprintf(ctx->mod_name, "snapshot");
             }while(0);
             if(!conn.mod_recv_data) {
                 free(conn.mod_recv_data);

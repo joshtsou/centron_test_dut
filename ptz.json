@@ -1,0 +1,159 @@
+{
+  "PTZ": {
+        "0": {
+            "Address": 0,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 5,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 5,
+            "Type": "Serial0",
+            "ZoomSpeed": 3
+        },
+        "1": {
+            "Address": 35,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 3,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 3,
+            "Type": "Serial0",
+            "ZoomSpeed": 3
+        },
+        "2": {
+            "Address": 0,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 5,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 5,
+            "Type": "Serial0",
+            "ZoomSpeed": 5
+        },
+        "3": {
+            "Address": 0,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 5,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 5,
+            "Type": "Serial0",
+            "ZoomSpeed": 5
+        },
+        "4": {
+            "Address": 0,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 5,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 5,
+            "Type": "Serial0",
+            "ZoomSpeed": 5
+        },
+        "5": {
+            "Address": 0,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 5,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 5,
+            "Type": "Serial0",
+            "ZoomSpeed": 5
+        },
+        "6": {
+            "Address": 0,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 5,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 5,
+            "Type": "Serial0",
+            "ZoomSpeed": 5
+        },
+        "7": {
+            "Address": 0,
+            "FocusSpeed": 5,
+            "GuardTour": {
+                "ActiveTour": -1,
+                "Count": 0,
+                "MaxCount": 8
+            },
+            "HomePos": 0,
+            "PanSpeed": 5,
+            "PatrolSpeed": 5,
+            "PresetPos": {
+                "Count": 0,
+                "MaxCount": 16
+            },
+            "TiltSpeed": 5,
+            "Type": "Serial0",
+            "ZoomSpeed": 5
+        },
+        "ControlLevel": "Operator",
+        "Count": 8,
+        "MaxCount": 8
+    }
+}
