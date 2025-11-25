@@ -19,6 +19,8 @@ void statemachine_init(statemachine_t *statemachine, void *data) {
 }
 
 int statemachine_run(statemachine_t *statemachine) {
+    // main_ctx *pctx = (main_ctx*)statemachine->data;
+    // char res_message[1024];
     switch(statemachine->stat) {
         case STATEMACHINE_START:
             PDEBUG("[STATE]: STATEMACHINE_START");
@@ -29,11 +31,11 @@ int statemachine_run(statemachine_t *statemachine) {
             usleep(500000);
             break;
         case STATEMACHINE_SUCCESS:
-            //PDEBUG("[STATE]: STATEMACHINE_SUCCESS");
+            //PPDEBUG(pctx, res_message, "test finished, success");
             isRun = false;
             break;
         case STATEMACHINE_FAILED:
-            //PDEBUG("[STATE]: STATEMACHINE_FAILED");
+            //PPDEBUG(pctx, res_message, "test finished, failed");
             isRun = false;
             break;
         default:

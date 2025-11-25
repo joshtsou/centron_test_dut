@@ -82,14 +82,21 @@ int ipc_ptz_request_send(json_t *data) {
 static void ptzcmd_reciever_io_callback(struct ev_loop *loop, struct ev_io *w, int revents) {
 	conn_t *con = (conn_t*)w->data;
 	main_ctx *ctx = (main_ctx*)ev_userdata(loop);
+    statemachine_t *pstat = ctx->statemachine;
 	//int ret = 0;
 	PPDEBUG(ctx, con->mod_res, "PTZCMD RECVing ... active_fd: %d", w->fd);
     if(ipc_ptz_request_recv(con->mod_recv_data, sizeof(con->mod_recv_data)) != 0) {
         PPDEBUG(ctx, con->mod_res, "recv error.");
+        pstat->stat = MOD_PTZCMD_STATUS_FAILED;
     }
     else {
         PPDEBUG(ctx, con->mod_res, "%s", con->mod_recv_data);
+        pstat->stat = MOD_PTZCMD_STATUS_SUCCESS;
     }
+    close(w->fd);
+    mod_ptzcmd_is_init = 0;
+    IPC_Destroy(con->ipc);
+    ev_io_stop(loop, w);
 }
 
 int mod_ptzcmd_reciever_create(conn_t *conn, main_ctx *ctx) {
@@ -177,7 +184,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_PARAMETER_SETTING);
                     break;
                 }
-                statemachine->stat = MOD_PTZCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }while(0);
             break;
         }
@@ -207,7 +214,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_MOVE);
                     break;
                 }
-                statemachine->stat = MOD_PTZCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }while(0);
             break;
         }
@@ -237,7 +244,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_ZOOM);
                     break;
                 }
-                statemachine->stat = MOD_PTZCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }while(0);
             break;
         }
@@ -267,11 +274,12 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_FOCUS);
                     break;
                 }
-                statemachine->stat = MOD_PTZCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }while(0);
             break;
         }
         case MOD_PTZCMD_STATUS_SUCCESS: {
+            PPDEBUG(ctx, conn.mod_res, "test finished, success");
             if(conn.jrequest) {
                 json_decref(conn.jrequest);
             }
@@ -279,6 +287,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
             break;
         }
         case MOD_PTZCMD_STATUS_FAILED: {
+            PPDEBUG(ctx, conn.mod_res, "test finished, failed");
             IPC_Destroy(conn.ipc);
             mod_ptzcmd_is_init = 0;
             if(conn.jrequest) {

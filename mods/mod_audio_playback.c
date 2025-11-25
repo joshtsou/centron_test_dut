@@ -107,7 +107,7 @@ int audio_play_get_frame_size(struct audio_attr *attr)
 	return attr->rate / 125 * 4 * attr->channels * attr->format / 8;
 }
 
-int handle_playback_pcm(int cs, const char* path, int times, struct audio_attr *pfile_attr, int head_length)
+int handle_playback_pcm(int cs, const char* path, struct audio_attr *pfile_attr, int head_length)
 {
     int read, sent, size = audio_play_get_frame_size(pfile_attr);
     char *buffer = (char*)malloc(size);
@@ -170,8 +170,10 @@ int mod_audio_playback_socket_connect(conn_t *conn) {
 int ipc_audio_playback_request_recv(conn_t *conn, main_ctx* ctx) {
     ipcmsg_hdr_t hdr;
     ipcmsg_resp_code_t rc;
+    statemachine_t *pstate = ctx->statemachine;
     int ret = -1;
     int r = recv(conn->ipc_sd, &hdr, sizeof(hdr), MSG_WAITALL);
+    pstate->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
     do {
         if(r != sizeof(hdr) || hdr.type != IPCMSG_TYPE_RESPONSE_CODE) {
             PPDEBUG(ctx, conn->mod_res, "recv header error.");
@@ -182,7 +184,7 @@ int ipc_audio_playback_request_recv(conn_t *conn, main_ctx* ctx) {
             PPDEBUG(ctx, conn->mod_res, "recv resp code error");
             break;
         }
-        statemachine_t *pstate = ctx->statemachine;
+        
         pstate->stat = MOD_AUDIO_PLAYBACK_STATUS_SEND;
         ret = 0;
     }while(0);
@@ -276,18 +278,18 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
             PPDEBUG(ctx, conn.mod_res, "sending audio playback...");
             int ret = -1;
             do {
-                if(handle_playback_pcm(conn.ipc_sd, PLAY_BACK_AUDIO_PATH, conn.times, &conn.file_attr, conn.head_length) == -1) {
+                if(handle_playback_pcm(conn.ipc_sd, PLAY_BACK_AUDIO_PATH, &conn.file_attr, conn.head_length) == -1) {
                     PPDEBUG(ctx, conn.mod_res, "send audio playback error");
                     break;
                 }else {
-                    PPDEBUG(ctx, conn.mod_res, "send audio playback success, time remain: %d", conn.times - 1);
+                    PPDEBUG(ctx, conn.mod_res, "send audio playback success, time remain: %d", --conn.times);
                 }
                 ret = 0;
             }while(0);
             if(ret != 0) {
                 statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
             }else {
-                if(--conn.times) {
+                if(conn.times) {
                     statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_SEND;
                 }
                 else {
@@ -297,14 +299,14 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
             break;
         }
         case MOD_AUDIO_PLAYBACK_STATUS_SUCCESS: {
-            PPDEBUG(ctx, conn.mod_res, "test finish, success");
+            PPDEBUG(ctx, conn.mod_res, "test finished, success");
             close(conn.ipc_sd);
             conn.ipc_sd = 0;
             statemachine->stat = state_success;
             break;
         }
         case MOD_AUDIO_PLAYBACK_STATUS_FAILED: {
-            PPDEBUG(ctx, conn.mod_res, "test finish, failed");
+            PPDEBUG(ctx, conn.mod_res, "test finished, failed");
             close(conn.ipc_sd);
             conn.ipc_sd = 0;
             statemachine->stat = state_failed;

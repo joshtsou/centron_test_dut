@@ -85,13 +85,16 @@ int ipc_snapshot_request_recv(conn_t *conn, main_ctx* ctx) {
 static void snapshot_reciever_io_callback(struct ev_loop *loop, struct ev_io *w, int revents) {
 	conn_t *con = (conn_t*)w->data;
 	main_ctx *ctx = (main_ctx*)ev_userdata(loop);
+    statemachine_t *pstat = ctx->statemachine; 
 	//int ret = 0;
 	//PPDEBUG(ctx, con->mod_res, "PTZCMD RECVing ... active_fd: %d", w->fd);
     if(ipc_snapshot_request_recv(con, ctx) != 0) {
         PPDEBUG(ctx, con->mod_res, "recv error.");
+        pstat->stat = MOD_SNAPSHOT_STATUS_FAILED;
     }
     else {
         PPDEBUG(ctx, con->mod_res, "recv success");
+        pstat->stat = MOD_SNAPSHOT_STATUS_SUCCESS;
     }
     if(con->mod_recv_data)
         free(con->mod_recv_data);
@@ -165,15 +168,17 @@ int mod_snapshot_handler_run(statemachine_t *statemachine, int state_success, in
                 else{
                     PPDEBUG(ctx, conn.mod_res, "send request success: cmd: %s", cmd);
                 }         
-                statemachine->stat = MOD_SNAPSHOT_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }while(0);
             break;
         }
         case MOD_SNAPSHOT_STATUS_SUCCESS: {
+            PPDEBUG(ctx, conn.mod_res, "test finished, success");
             statemachine->stat = state_success;
             break;
         }
         case MOD_SNAPSHOT_STATUS_FAILED: {
+            PPDEBUG(ctx, conn.mod_res, "test finished, failed");
             close(conn.ipc_sd);
             if(conn.mod_recv_data)
                 free(conn.mod_recv_data);

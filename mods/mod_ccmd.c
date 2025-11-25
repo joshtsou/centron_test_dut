@@ -232,14 +232,14 @@ int mod_ccmd_handler_run(statemachine_t *statemachine, int state_success, int st
             break;
         }
         case MOD_CCMD_STATUS_SUCCESS: {
-            PPDEBUG(ctx, conn.mod_res, "test finish, success");
+            PPDEBUG(ctx, conn.mod_res, "test finished, success");
             close(conn.ipc_sd);
             conn.ipc_sd = 0;
             statemachine->stat = state_success;
             break;
         }
         case MOD_CCMD_STATUS_FAILED: {
-            PPDEBUG(ctx, conn.mod_res, "test finish, failed");
+            PPDEBUG(ctx, conn.mod_res, "test finished, failed");
             close(conn.ipc_sd);
             conn.ipc_sd = 0;
             statemachine->stat = state_failed;
