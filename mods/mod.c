@@ -5,11 +5,12 @@
 #include "socket.h"
 #include "mod.h"
 
-void mod_result_send(main_ctx *ctx, char *str) {
+int mod_result_send(main_ctx *ctx, char *str) {
 	ipc_header_t header;
 	header.mod = ctx->ipc_header.mod;
 	header.cmd = ctx->ipc_header.cmd;
 	header.len = strlen(str);
+	int ret = -1;
 	do {
 		if(socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, &header, sizeof(ipc_header_t), &ctx->remote_addr) == -1) {
 			break;
@@ -17,7 +18,9 @@ void mod_result_send(main_ctx *ctx, char *str) {
 		if(socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, str, strlen(str), &ctx->remote_addr) == -1) {
 			break;
 		}
+		ret = 0;
 	}while(0);
+	return ret;
 }
 
 void mod_result_append(char *mod_name, char *input, int input_size, char *target, int target_size) {

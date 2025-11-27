@@ -105,7 +105,7 @@ static void snapshot_reciever_io_callback(struct ev_loop *loop, struct ev_io *w,
 }
 
 int mod_snapshot_reciever_create(conn_t *conn, main_ctx *ctx) {
-    if(!conn->ipc_sd)
+    if(conn->ipc_sd <= 0)
 	{
 		PDEBUG("%s fail due to ev_io init", ctx->mod_name);
 		return -1;

@@ -23,6 +23,7 @@ int socket_mcast_bind_group(char* addr_g, int mcast_port) {
     struct sockaddr_in addr;
     struct ip_mreq mreq;
     int sockfd;
+    int reuse = 1;
     do {
         sockfd = socket(AF_INET, SOCK_DGRAM, 0);
         if(sockfd == -1) {
@@ -37,6 +38,7 @@ int socket_mcast_bind_group(char* addr_g, int mcast_port) {
 
         mreq.imr_multiaddr.s_addr = inet_addr(addr_g);
         mreq.imr_interface.s_addr = htonl(INADDR_ANY);
+        setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
         setsockopt(sockfd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
     } while(0);
     return sockfd;
@@ -45,12 +47,14 @@ int socket_mcast_bind_group(char* addr_g, int mcast_port) {
 int socket_mcast_bind(int local_port) {
     int sockfd;
     struct sockaddr_in local_addr;
+    int reuse = 1;
     do {
         sockfd = socket(AF_INET, SOCK_DGRAM, 0);
         if(sockfd == -1) {
             PDEBUG("socket failed");
             break;
         }
+        setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
         memset(&local_addr, 0, sizeof(local_addr));
         local_addr.sin_family = AF_INET;
         local_addr.sin_addr.s_addr = htonl(INADDR_ANY);

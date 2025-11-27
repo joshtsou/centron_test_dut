@@ -8,8 +8,12 @@ export OUTDIR=$(ROOT_DIR)/out
 export MODDIR=$(ROOT_DIR)/mods
 export PKG_INSTALL_DIR=$(OUTDIR)
 
-
+DEBUG = n
 CROSS = y
+
+ifeq ($(DEBUG), y)
+	CFLAGS += -DDEBUG
+endif
 ifeq ($(CROSS), y)
 	export CROSS_PATH=/opt/arm/arm-ca53-linux-gnueabihf-6.4
 	export CROSS_COMPILE=$(CROSS_PATH)/usr/bin/arm-ca53-linux-gnueabihf-
@@ -20,12 +24,12 @@ ifeq ($(CROSS), y)
 	export STRIP=$(CROSS_COMPILE)strip
 	export LD=$(CROSS_COMPILE)ld
 	export RANLIB=$(CROSS_COMPILE)ranlib
-	export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing -march=armv8-a -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize -fno-builtin -fno-common -DDEBUG
+	export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing -march=armv8-a -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize -fno-builtin -fno-common
 else
 	export CROSS_HOST=
 	export CC=gcc
 	export AR=ar
-	export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing -DDEBUG
+	export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing
 endif
 
 .PHONY: $(SUBDIRS) $(CLEANSUBDIRS)

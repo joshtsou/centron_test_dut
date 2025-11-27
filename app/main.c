@@ -112,6 +112,7 @@ void exit_main() {
         json_decref(g_ctx.data);
     if(g_ctx.statemachine)
         free(g_ctx.statemachine);
+    ev_break(g_ctx.loop, EVBREAK_ALL);
 }
 
 void sigint_handler(int sig) {

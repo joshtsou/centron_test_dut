@@ -180,11 +180,14 @@ int ipc_audio_playback_request_recv(conn_t *conn, main_ctx* ctx) {
             break;
         }
         r = recv(conn->ipc_sd, &rc, sizeof(rc), MSG_WAITALL);
-        if(r != sizeof(rc) || rc.code != IPCMSG_RESP_CODE_OK) {
-            PPDEBUG(ctx, conn->mod_res, "recv resp code error");
+        if(r != sizeof(rc)) {
+            PPDEBUG(ctx, conn->mod_res, "recv resp data size error.");
             break;
         }
-        
+        if(rc.code != IPCMSG_RESP_CODE_OK) {
+            PPDEBUG(ctx, conn->mod_res, "recv resp code error, code: %d", rc.code);
+            break;
+        }
         pstate->stat = MOD_AUDIO_PLAYBACK_STATUS_SEND;
         ret = 0;
     }while(0);
@@ -275,21 +278,22 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
             break;
         }
         case MOD_AUDIO_PLAYBACK_STATUS_SEND: {
-            PPDEBUG(ctx, conn.mod_res, "sending audio playback...");
+            PPDEBUG(ctx, conn.mod_res, "sending audio playback... times: %d", conn.times);
             int ret = -1;
             do {
                 if(handle_playback_pcm(conn.ipc_sd, PLAY_BACK_AUDIO_PATH, &conn.file_attr, conn.head_length) == -1) {
                     PPDEBUG(ctx, conn.mod_res, "send audio playback error");
                     break;
                 }else {
-                    PPDEBUG(ctx, conn.mod_res, "send audio playback success, time remain: %d", --conn.times);
+                    --conn.times;
+                    PPDEBUG(ctx, conn.mod_res, "send audio playback success, time remain: %d", conn.times);
                 }
                 ret = 0;
             }while(0);
             if(ret != 0) {
                 statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
             }else {
-                if(conn.times) {
+                if(conn.times != 0) {
                     statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_SEND;
                 }
                 else {

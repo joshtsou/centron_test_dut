@@ -1,5 +1,6 @@
 #ifndef _MOD_H
 #define _MOD_H
+#include <unistd.h>
 #include "main.h"
 #include "debug.h"
 
@@ -21,12 +22,14 @@ do { \
     buf[0] = '\0'; \
     sprintf(temp, fmt, ##__VA_ARGS__); \
     mod_result_append(ctx->mod_name, temp, strlen(temp), buf, sizeof(buf)); \
-    mod_result_send(ctx, buf); \
+    if(mod_result_send(ctx, buf) == -1) { \
+        TDEBUG("send multicast debug failed."); \
+    } \
 } while(0);
 #endif
 
 
-void mod_result_send(main_ctx *ctx, char *str);
+int mod_result_send(main_ctx *ctx, char *str);
 void mod_result_append(char *mod_name, char *input, int input_size, char *target, int target_size);
 
 #endif
