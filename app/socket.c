@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 
 #include <netinet/in.h>
 #include <netinet/tcp.h>
@@ -47,6 +48,7 @@ int socket_mcast_bind_group(char* addr_g, int mcast_port) {
 int socket_mcast_bind(int local_port) {
     int sockfd;
     struct sockaddr_in local_addr;
+    int size = 8 * 1024 * 1024;
     int reuse = 1;
     do {
         sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -55,6 +57,10 @@ int socket_mcast_bind(int local_port) {
             break;
         }
         setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+        setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &size, sizeof(size));
+        int flags = fcntl(sockfd, F_GETFL, 0);
+        fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
+
         memset(&local_addr, 0, sizeof(local_addr));
         local_addr.sin_family = AF_INET;
         local_addr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -113,7 +119,7 @@ int socket_mcast_recvfrom(int sockfd, void *buf, int len, struct sockaddr_in *re
 
 int socket_mcast_reply(int sockfd, int reply_port, void *buf, int len, struct sockaddr_in *remote_addr) {
     int ret = -1;
-    struct sockaddr_in reply_addr;
+    //struct sockaddr_in reply_addr;
     do {
         if(!remote_addr) {
             PDEBUG("socket reply failed: addr is null.")
@@ -123,11 +129,11 @@ int socket_mcast_reply(int sockfd, int reply_port, void *buf, int len, struct so
             PDEBUG("socket reply failed: buf is null.");
             break;
         }
-        memset(&reply_addr, 0, sizeof(reply_addr));
-        reply_addr.sin_family = AF_INET;
-        reply_addr.sin_port = htons(reply_port);
-        reply_addr.sin_addr = remote_addr->sin_addr;
-        if ((ret = sendto(sockfd, buf, len, 0, (struct sockaddr*)&reply_addr, sizeof(reply_addr))) != len) {
+        // memset(&reply_addr, 0, sizeof(reply_addr));
+        // reply_addr.sin_family = AF_INET;
+        // reply_addr.sin_port = htons(reply_port);
+        // reply_addr.sin_addr = remote_addr->sin_addr;
+        if ((ret = sendto(sockfd, buf, len, 0, (struct sockaddr*)remote_addr, sizeof(struct sockaddr_in))) != len) {
             PDEBUG("scoket reply failed. send size: %d, should be: %d", ret, len);
             ret = -1;
             break;
