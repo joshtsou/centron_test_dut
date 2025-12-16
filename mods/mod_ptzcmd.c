@@ -53,7 +53,7 @@ int ipc_ptz_request_recv(char *result, int size) {
     return ret;
 }
 
-int ipc_ptz_request_send(json_t *data) {
+int ipc_ptz_request_send(main_ctx *ctx, json_t *data) {
     int ret = -1;
     char *str_request = json_dumps(data, 0);
     system_command_packet_t hd;
@@ -71,7 +71,7 @@ int ipc_ptz_request_send(json_t *data) {
             PDEBUG("send data error");
             break;
         }
-        PDEBUG("%s", str_request);
+        PPDEBUG(ctx, conn.mod_res, "%s", str_request);
         ret = 0;
     }while(0);
     if(str_request)
@@ -180,7 +180,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                 {
                     json_integer_set(jp_channel, channel);
                 }
-                if(ipc_ptz_request_send(conn.jrequest) != 0) {
+                if(ipc_ptz_request_send(ctx, conn.jrequest) != 0) {
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_PARAMETER_SETTING);
                     break;
                 }
@@ -210,7 +210,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                 {
                     json_integer_set(jp_channel, channel);
                 }
-                if(ipc_ptz_request_send(conn.jrequest) != 0) {
+                if(ipc_ptz_request_send(ctx, conn.jrequest) != 0) {
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_MOVE);
                     break;
                 }
@@ -240,7 +240,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                 {
                     json_integer_set(jp_channel, channel);
                 }
-                if(ipc_ptz_request_send(conn.jrequest) != 0) {
+                if(ipc_ptz_request_send(ctx, conn.jrequest) != 0) {
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_ZOOM);
                     break;
                 }
@@ -270,7 +270,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                 {
                     json_integer_set(jp_channel, channel);
                 }
-                if(ipc_ptz_request_send(conn.jrequest) != 0) {
+                if(ipc_ptz_request_send(ctx, conn.jrequest) != 0) {
                     PPDEBUG(ctx, conn.mod_res, "send request error, cmd: %d", MOD_PTZCMD_STATUS_FOCUS);
                     break;
                 }

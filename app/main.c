@@ -26,13 +26,17 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
     if(ctx->data != NULL)
         free(ctx->data);
     do {
-        if(socket_mcast_recvfrom(w->fd, &ctx->ipc_header, sizeof(ipc_header_t), &ctx->remote_addr) == -1)
+        if(socket_mcast_recvfrom(w->fd, &ctx->ipc_header, sizeof(ipc_header_t), &ctx->remote_addr) == -1) {
+            TDEBUG("main recv wrong header from sender. error");
             break;
-        buf = calloc(1, ctx->ipc_header.len+1);
-        if(socket_mcast_recvfrom(w->fd, buf, ctx->ipc_header.len, &ctx->remote_addr) == -1)
-             break;
+        }
         TDEBUG("MOD: %d, CMD: %d", ctx->ipc_header.mod, ctx->ipc_header.cmd);
-        TDEBUG("%s", buf);
+        buf = calloc(1, ctx->ipc_header.len+1);
+        if(socket_mcast_recvfrom(w->fd, buf, ctx->ipc_header.len, &ctx->remote_addr) == -1) {
+            TDEBUG("main recv wrong data from sender. error");
+            break;
+        }
+        TDEBUG("RECV DATA: %s", buf);
         if((ctx->data = json_loads(buf, 0, &error)) == NULL) {
             PDEBUG("json string error. %s", error.text);
             break;

@@ -41,6 +41,8 @@ int socket_mcast_bind_group(char* addr_g, int mcast_port) {
         mreq.imr_interface.s_addr = htonl(INADDR_ANY);
         setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
         setsockopt(sockfd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+        int flags = fcntl(sockfd, F_GETFL, 0);
+        fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
     } while(0);
     return sockfd;
 }
@@ -119,7 +121,7 @@ int socket_mcast_recvfrom(int sockfd, void *buf, int len, struct sockaddr_in *re
 
 int socket_mcast_reply(int sockfd, int reply_port, void *buf, int len, struct sockaddr_in *remote_addr) {
     int ret = -1;
-    //struct sockaddr_in reply_addr;
+    struct sockaddr_in reply_addr;
     do {
         if(!remote_addr) {
             PDEBUG("socket reply failed: addr is null.")
@@ -129,11 +131,12 @@ int socket_mcast_reply(int sockfd, int reply_port, void *buf, int len, struct so
             PDEBUG("socket reply failed: buf is null.");
             break;
         }
-        // memset(&reply_addr, 0, sizeof(reply_addr));
-        // reply_addr.sin_family = AF_INET;
-        // reply_addr.sin_port = htons(reply_port);
+        memset(&reply_addr, 0, sizeof(reply_addr));
+        reply_addr.sin_family = AF_INET;
+        reply_addr.sin_port = htons(reply_port);
         // reply_addr.sin_addr = remote_addr->sin_addr;
-        if ((ret = sendto(sockfd, buf, len, 0, (struct sockaddr*)remote_addr, sizeof(struct sockaddr_in))) != len) {
+        reply_addr.sin_addr.s_addr = remote_addr->sin_addr.s_addr;
+        if (ret = sendto(sockfd, buf, len, 0, (struct sockaddr*)&reply_addr, sizeof(reply_addr)) != len) {
             PDEBUG("scoket reply failed. send size: %d, should be: %d", ret, len);
             ret = -1;
             break;
