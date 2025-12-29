@@ -162,7 +162,7 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
                         conn[idx].stream = s;
                         conn[idx].ipc = IPC_Create_Client(MEDIA_SOCKET);
                         if(!conn[idx].ipc) {
-                            PDEBUG("MOD SSCMD CONNECT IPC ERROR, channel: %d, stream: %d", ch, s);
+                            PPDEBUG(ctx, conn[idx].mod_res, "MOD SSCMD CONNECT IPC ERROR, channel: %d, stream: %d", ch, s);
                             is_err |= 1;
                         }
                         else {

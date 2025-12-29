@@ -23,7 +23,7 @@ do { \
     sprintf(temp, fmt, ##__VA_ARGS__); \
     mod_result_append(ctx->mod_name, temp, strlen(temp), buf, sizeof(buf)); \
     if(mod_result_send(ctx, buf) == -1) { \
-        TDEBUG("send multicast debug failed."); \
+        TDEBUG("send debug failed. message: %s", buf); \
     } \
 } while(0);
 #endif

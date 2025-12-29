@@ -28,7 +28,7 @@ int statemachine_run(statemachine_t *statemachine) {
             break;
         case STATEMACHINE_SLEEP:
             PDEBUG("[STATE]: STATEMACHINE_SLEEP");
-            usleep(500000);
+            usleep(100000);
             break;
         case STATEMACHINE_SUCCESS:
             //PPDEBUG(pctx, res_message, "test finished, success");
@@ -36,6 +36,7 @@ int statemachine_run(statemachine_t *statemachine) {
             break;
         case STATEMACHINE_FAILED:
             //PPDEBUG(pctx, res_message, "test finished, failed");
+            TDEBUG("[STATE]: STATEMACHINE_FAILED");
             isRun = false;
             break;
         default:

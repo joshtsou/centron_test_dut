@@ -4,7 +4,7 @@
 #include "mod.h"
 
 #define PLAYBACK_SOCKET			"/tmp/ipc-aout-0-0"
-#define PLAY_BACK_AUDIO_PATH    "/tmp/scale_10s_stereo_16k_16bit.wav"
+#define PLAY_BACK_AUDIO_PATH    "./scale_10s_stereo_16k_16bit.wav"
 #define IPCMSG_TYPE_REQUEST_AUDIO_OUT           0x0001
 #define IPCMSG_TYPE_RESPONSE_CODE               0x8fff
 

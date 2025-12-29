@@ -23,26 +23,26 @@ static char* direction_map[9] = {"left", "upleft", "up", "upright", "right", "do
 static char* zoom_map[2] = {"in", "out"};
 static char* focus_map[2] = {"minus", "plus"};
 
-int ipc_ptz_request_recv(char *result, int size) {
+int ipc_ptz_request_recv(main_ctx* ctx, conn_t* con, char *result, int size) {
     int ret = -1;
     char *recv_val = NULL;
     system_command_packet_t hd;
     do {
         if(IPC_Recv(conn.ipc, (unsigned char *)&hd, sizeof(system_command_packet_t), 0) != sizeof(system_command_packet_t)) {
-            PDEBUG("recv header error.");
+            PPDEBUG(ctx, con->mod_res, "recv header error.");
             break;
         }
         if(hd.cmd != 'j') {
-            PDEBUG("recv header cmd error");
+            PPDEBUG(ctx, con->mod_res, "recv header cmd error");
             break;
         }
         if(hd.sync != SYSTEMD_COMMAND_PACKET_SYNC_CODE) {
-            PDEBUG("recv header sync error");
+            PPDEBUG(ctx, con->mod_res, "recv header sync error");
             break;
         }
         recv_val = calloc(1, hd.len+1);
         if(IPC_Recv(conn.ipc, (unsigned char *)recv_val, hd.len, 0) != hd.len) {
-            PDEBUG("recv data len error.");
+            PPDEBUG(ctx, con->mod_res, "recv data len error.");
             break;
         }
         snprintf(result, size, "%s", recv_val);
@@ -85,7 +85,7 @@ static void ptzcmd_reciever_io_callback(struct ev_loop *loop, struct ev_io *w, i
     statemachine_t *pstat = ctx->statemachine;
 	//int ret = 0;
 	PPDEBUG(ctx, con->mod_res, "PTZCMD RECVing ... active_fd: %d", w->fd);
-    if(ipc_ptz_request_recv(con->mod_recv_data, sizeof(con->mod_recv_data)) != 0) {
+    if(ipc_ptz_request_recv(ctx, con, con->mod_recv_data, sizeof(con->mod_recv_data)) != 0) {
         PPDEBUG(ctx, con->mod_res, "recv error.");
         pstat->stat = MOD_PTZCMD_STATUS_FAILED;
     }
@@ -122,7 +122,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                     break;
                 conn.ipc = IPC_Create_Client(PTZ_SOCKET);
                 if(!conn.ipc) {
-                    PDEBUG("MOD PTZCMD CONNECT IPC ERROR");
+                    PPDEBUG(ctx, conn.mod_res, "MOD PTZCMD CONNECT IPC ERROR");
                     is_err = 1;
                     break;   
                 }

@@ -20,10 +20,10 @@ typedef struct connection {
 } conn_t;
 
 char *param_file_path[] = {
-    "/tmp/videosource.json",
-    "/tmp/audiosource.json",
-    "/tmp/ptz.json",
-    "/tmp/storage.json"
+    "./videosource.json",
+    "./audiosource.json",
+    "./ptz.json",
+    "./storage.json"
 };
 
 static conn_t conn = {0};

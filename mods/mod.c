@@ -12,12 +12,22 @@ int mod_result_send(main_ctx *ctx, char *str) {
 	header.len = strlen(str);
 	int ret = -1;
 	do {
+#ifndef CON_TCP
 		if(socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, &header, sizeof(ipc_header_t), &ctx->remote_addr) == -1) {
 			break;
 		}
 		if(socket_mcast_reply(ctx->multi_sockfd, REPLY_PORT, str, strlen(str), &ctx->remote_addr) == -1) {
 			break;
 		}
+		
+#else
+		if(socket_tcp_send(ctx->tcp_accept_sockfd, &header, sizeof(ipc_header_t)) == -1) {
+			break;
+		}
+		if(socket_tcp_send(ctx->tcp_accept_sockfd, str, strlen(str)) == -1) {
+			break;
+		}
+#endif
 		ret = 0;
 	}while(0);
 	return ret;

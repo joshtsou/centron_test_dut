@@ -10,6 +10,7 @@ export PKG_INSTALL_DIR=$(OUTDIR)
 
 DEBUG = n
 CROSS = centron
+CON=tcp
 
 ifeq ($(DEBUG), y)
 	CFLAGS += -DDEBUG
@@ -41,6 +42,10 @@ else
 	export CC=gcc
 	export AR=ar
 	export CFLAGS += -I$(ROOT_DIR)/include -I$(OUTDIR)/include -Wall -O2 -Wno-strict-aliasing -fno-strict-aliasing
+endif
+
+ifeq ($(CON), tcp)
+CFLAGS += -DCON_TCP
 endif
 
 .PHONY: $(SUBDIRS) $(CLEANSUBDIRS)
