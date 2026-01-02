@@ -9,8 +9,8 @@ export MODDIR=$(ROOT_DIR)/mods
 export PKG_INSTALL_DIR=$(OUTDIR)
 
 DEBUG = n
-CROSS = centron
-CON=tcp
+CROSS = smax
+CON=
 
 ifeq ($(DEBUG), y)
 	CFLAGS += -DDEBUG

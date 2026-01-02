@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <sys/select.h>
+#include <stdbool.h>
 #include "mod_ptzcmd.h"
 #include "mod_ipc.h"
 #include "socket.h"
@@ -12,9 +13,11 @@ typedef struct connection {
     IPC_Socket *ipc;
     int channel;
     ev_io rd_io;
+    pthread_t th;
 	char mod_res[1024];
     char mod_recv_data[1024];
     json_t *jrequest;
+    main_ctx *ctx;
 } conn_t;
 
 static conn_t conn;
@@ -22,13 +25,14 @@ static int mod_ptzcmd_is_init = 0;
 static char* direction_map[9] = {"left", "upleft", "up", "upright", "right", "downright", "down", "downleft", "home"};
 static char* zoom_map[2] = {"in", "out"};
 static char* focus_map[2] = {"minus", "plus"};
+static bool thread_is_loop;
 
 int ipc_ptz_request_recv(main_ctx* ctx, conn_t* con, char *result, int size) {
     int ret = -1;
     char *recv_val = NULL;
     system_command_packet_t hd;
     do {
-        if(IPC_Recv(conn.ipc, (unsigned char *)&hd, sizeof(system_command_packet_t), 0) != sizeof(system_command_packet_t)) {
+        if(IPC_Recv(con->ipc, (unsigned char *)&hd, sizeof(system_command_packet_t), 0) != sizeof(system_command_packet_t)) {
             PPDEBUG(ctx, con->mod_res, "recv header error.");
             break;
         }
@@ -41,7 +45,7 @@ int ipc_ptz_request_recv(main_ctx* ctx, conn_t* con, char *result, int size) {
             break;
         }
         recv_val = calloc(1, hd.len+1);
-        if(IPC_Recv(conn.ipc, (unsigned char *)recv_val, hd.len, 0) != hd.len) {
+        if(IPC_Recv(con->ipc, (unsigned char *)recv_val, hd.len, 0) != hd.len) {
             PPDEBUG(ctx, con->mod_res, "recv data len error.");
             break;
         }
@@ -99,7 +103,38 @@ static void ptzcmd_reciever_io_callback(struct ev_loop *loop, struct ev_io *w, i
     ev_io_stop(loop, w);
 }
 
-int mod_ptzcmd_reciever_create(conn_t *conn, main_ctx *ctx) {
+void *ptz_recv_thread(void *arg)
+{
+    struct timeval tv;
+    conn_t *conn = (conn_t*)arg;
+    main_ctx *ctx = conn->ctx;
+    statemachine_t *pstat = ctx->statemachine;
+    fd_set readfds;
+    int ret = 0;
+    do {
+        FD_ZERO(&readfds);
+        FD_SET(conn->ipc->fd, &readfds);
+        tv.tv_sec = 5;
+        tv.tv_usec = 0;
+        ret = select(conn->ipc->fd+1, &readfds, NULL, NULL, &tv);
+        if (ret > 0 && FD_ISSET(conn->ipc->fd, &readfds)) {
+            if(ipc_ptz_request_recv(ctx, conn, conn->mod_recv_data, sizeof(conn->mod_recv_data)) != 0) {
+                PPDEBUG(ctx, conn->mod_res, "ptz recv from ipc error.");
+                pstat->stat = MOD_PTZCMD_STATUS_FAILED;
+            }
+            else {
+                PPDEBUG(ctx, conn->mod_res, "%s", conn->mod_recv_data);
+                pstat->stat = MOD_PTZCMD_STATUS_SUCCESS;
+            }
+        } else if(ret == -1){
+            TDEBUG("ptz module ipc select error");
+            break;
+        }
+    }while(thread_is_loop);
+    return 0;
+}
+
+int mod_ptzcmd_reciever_create(main_ctx *ctx, conn_t *conn) {
     if(!IPC_SOCKET_CHECK(conn->ipc))
 	{
 		PDEBUG("%s fail due to ev_io init", ctx->mod_name);
@@ -116,6 +151,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
     int is_err = 0;
     switch(statemachine->stat) {
         case MOD_PTZCMD_STATUS_START: {
+            thread_is_loop = true;
             do {
                 sprintf(ctx->mod_name, "ptzcmd");
                 if(mod_ptzcmd_is_init)
@@ -127,10 +163,10 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                     break;   
                 }
             }while(0);
-            if(!ev_is_active(&conn.rd_io)) {
-                PDEBUG("recv thread created");
-                mod_ptzcmd_reciever_create(&conn, ctx);
-            }
+            // if(!ev_is_active(&conn.rd_io)) {
+            //     PDEBUG("recv thread created");
+            //     mod_ptzcmd_reciever_create(&conn, ctx);
+            // }
             if(conn.jrequest) {
                 json_decref(conn.jrequest);
             }
@@ -146,6 +182,9 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
                 json_object_set_new(conn.jrequest, "channel", json_integer(0));
                 statemachine->stat = MOD_PTZCMD_STATUS_START + ctx->ipc_header.cmd;
             }
+            conn.ctx = ctx;
+            pthread_create(&conn.th, NULL, ptz_recv_thread, &conn);
+            pthread_detach(conn.th);
             break;
         }
         case MOD_PTZCMD_STATUS_PARAMETER_SETTING: {
@@ -280,9 +319,12 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
         }
         case MOD_PTZCMD_STATUS_SUCCESS: {
             PPDEBUG(ctx, conn.mod_res, "test finished, success");
+            IPC_Destroy(conn.ipc);
+            mod_ptzcmd_is_init = 0;
             if(conn.jrequest) {
                 json_decref(conn.jrequest);
             }
+            thread_is_loop = false;
             statemachine->stat = state_success;
             break;
         }
@@ -293,6 +335,7 @@ int mod_ptzcmd_handler_run(statemachine_t *statemachine, int state_success, int 
             if(conn.jrequest) {
                 json_decref(conn.jrequest);
             }
+            thread_is_loop = false;
             statemachine->stat = state_failed;
             break;
         }

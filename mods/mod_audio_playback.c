@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <errno.h>
+#include <stdbool.h>
 #include "mod_audio_playback.h"
 #include "mod_ipc.h"
 #include "socket.h"
@@ -18,6 +19,8 @@ typedef struct connection {
 	char mod_res[1024];
     int head_length;
     struct audio_attr file_attr;
+    main_ctx *ctx;
+    pthread_t ipc_thread;
     //char *mod_recv_data;
     //int recv_len;
 } conn_t;
@@ -30,6 +33,7 @@ typedef enum {
 #define RTS_AUDIO_HEADER_LENGTH_MAX	0x44
 
 static conn_t conn = {0};
+static int thread_is_loop;
 //int static mod_snapshot_is_init = 0;
 
 int audio_play_analyze_header(FILE *fp, struct audio_attr *attr, int *head_length, int type_id)
@@ -130,6 +134,7 @@ int handle_playback_pcm(int cs, const char* path, struct audio_attr *pfile_attr,
             //TDEBUG("audio callback sending... send total: %d bytes", all);
         }
     }while(read);
+    TDEBUG("audio callback send finished, send total: %d bytes", all);
     ret = 0;
 end:
     if(buffer)
@@ -210,6 +215,36 @@ static void audio_playback_reciever_io_callback(struct ev_loop *loop, struct ev_
     ev_io_stop(loop, w);
 }
 
+void *audio_playback_recv_thread(void *arg)
+{
+    struct timeval tv;
+    conn_t *conn = (conn_t*)arg;
+    main_ctx *ctx = conn->ctx;
+    //statemachine_t *pstat = ctx->statemachine;
+    fd_set readfds;
+    int ret = 0;
+    do {
+        FD_ZERO(&readfds);
+        FD_SET(conn->ipc_sd, &readfds);
+        tv.tv_sec = 5;
+        tv.tv_usec = 0;
+        ret = select(conn->ipc_sd+1, &readfds, NULL, NULL, &tv);
+        if (ret > 0 && FD_ISSET(conn->ipc_sd, &readfds)) {
+            if(ipc_audio_playback_request_recv(conn, ctx) != 0) {
+                PPDEBUG(ctx, conn->mod_res, "recv error.");
+            }
+            else {
+                PPDEBUG(ctx, conn->mod_res, "recv success");
+            }
+            break;
+        } else if(ret == -1){
+            TDEBUG("audio playback module ipc select error");
+            break;
+        }
+    }while(thread_is_loop);
+    return 0;
+}
+
 int mod_audio_playback_reciever_create(conn_t *conn, main_ctx *ctx) {
     if(!conn->ipc_sd)
 	{
@@ -229,6 +264,7 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
 
     switch(statemachine->stat) {
         case MOD_AUDIO_PLAYBACK_STATUS_START: {
+            thread_is_loop = true;
             do {
                 sprintf(ctx->mod_name, "audio playback");
                 if(conn.ipc_sd)
@@ -242,10 +278,13 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
                 statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_FAILED;
             }
             else {
-                if(!ev_is_active(&conn.rd_io)) {
-                    PDEBUG("recv thread created");
-                    mod_audio_playback_reciever_create(&conn, ctx);
-                }
+                // if(!ev_is_active(&conn.rd_io)) {
+                //     PDEBUG("recv thread created");
+                //     mod_audio_playback_reciever_create(&conn, ctx);
+                // }
+                conn.ctx = ctx;
+                pthread_create(&conn.ipc_thread, NULL, audio_playback_recv_thread, &conn);
+                pthread_detach(conn.ipc_thread);
                 statemachine->stat = MOD_AUDIO_PLAYBACK_STATUS_START + ctx->ipc_header.cmd;
             }
             break;
@@ -304,6 +343,7 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
         }
         case MOD_AUDIO_PLAYBACK_STATUS_SUCCESS: {
             PPDEBUG(ctx, conn.mod_res, "test finished, success");
+            thread_is_loop = false;
             close(conn.ipc_sd);
             conn.ipc_sd = 0;
             statemachine->stat = state_success;
@@ -311,6 +351,7 @@ int mod_audio_playback_handler_run(statemachine_t *statemachine, int state_succe
         }
         case MOD_AUDIO_PLAYBACK_STATUS_FAILED: {
             PPDEBUG(ctx, conn.mod_res, "test finished, failed");
+            thread_is_loop = false;
             close(conn.ipc_sd);
             conn.ipc_sd = 0;
             statemachine->stat = state_failed;

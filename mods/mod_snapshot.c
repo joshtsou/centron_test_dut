@@ -5,6 +5,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <stdbool.h>
 #include "mod_snapshot.h"
 #include "mod_ipc.h"
 #include "socket.h"
@@ -14,6 +15,8 @@ typedef struct connection {
     int ipc_sd;
     int channel;
     ev_io rd_io;
+    main_ctx *ctx;
+    pthread_t ipc_pthread;
 	char mod_res[1024];
     char *mod_recv_data;
     int recv_len;
@@ -21,6 +24,7 @@ typedef struct connection {
 
 static conn_t conn = {0};
 int static mod_snapshot_is_init = 0;
+int static thread_is_loop;
 
 int mod_snapshot_socket_connect(conn_t *conn) {
     int ret = -1;
@@ -116,11 +120,44 @@ int mod_snapshot_reciever_create(conn_t *conn, main_ctx *ctx) {
     return 0;
 }
 
+void *snapshot_recv_thread(void *arg)
+{
+    struct timeval tv;
+    conn_t *conn = (conn_t*)arg;
+    main_ctx *ctx = conn->ctx;
+    statemachine_t *pstat = ctx->statemachine;
+    fd_set readfds;
+    int ret = 0;
+    do {
+        FD_ZERO(&readfds);
+        FD_SET(conn->ipc_sd, &readfds);
+        tv.tv_sec = 5;
+        tv.tv_usec = 0;
+        ret = select(conn->ipc_sd+1, &readfds, NULL, NULL, &tv);
+        if (ret > 0 && FD_ISSET(conn->ipc_sd, &readfds)) {
+            if(ipc_snapshot_request_recv(conn, ctx) != 0) {
+                PPDEBUG(ctx, conn->mod_res, "recv error.");
+                pstat->stat = MOD_SNAPSHOT_STATUS_FAILED;
+            }
+            else {
+                PPDEBUG(ctx, conn->mod_res, "recv success");
+                pstat->stat = MOD_SNAPSHOT_STATUS_SUCCESS;
+            }
+            break;
+        } else if(ret == -1){
+            TDEBUG("ptz module ipc select error");
+            break;
+        }
+    }while(thread_is_loop);
+    return 0;
+}
+
 int mod_snapshot_handler_run(statemachine_t *statemachine, int state_success, int state_failed) {
     main_ctx *ctx = (main_ctx*)statemachine->data;
     int is_err = 0;
     switch(statemachine->stat) {
         case MOD_SNAPSHOT_STATUS_START: {
+            thread_is_loop = true;
             do {
                 sprintf(ctx->mod_name, "snapshot");
                 if(mod_snapshot_is_init)
@@ -138,12 +175,15 @@ int mod_snapshot_handler_run(statemachine_t *statemachine, int state_success, in
                 statemachine->stat = MOD_SNAPSHOT_STATUS_FAILED;
             }
             else {
-                if(!ev_is_active(&conn.rd_io)) {
-                    PDEBUG("recv thread created");
-                    mod_snapshot_reciever_create(&conn, ctx);
-                }
+                // if(!ev_is_active(&conn.rd_io)) {
+                //     PDEBUG("recv thread created");
+                //     mod_snapshot_reciever_create(&conn, ctx);
+                // }
                 conn.mod_res[0] = '\0';
                 mod_snapshot_is_init = 1;
+                conn.ctx = ctx;
+                pthread_create(&conn.ipc_pthread, NULL, snapshot_recv_thread, &conn);
+                pthread_detach(conn.ipc_pthread);
                 statemachine->stat = MOD_SNAPSHOT_STATUS_START + ctx->ipc_header.cmd;
             }
             break;
@@ -174,11 +214,17 @@ int mod_snapshot_handler_run(statemachine_t *statemachine, int state_success, in
         }
         case MOD_SNAPSHOT_STATUS_SUCCESS: {
             PPDEBUG(ctx, conn.mod_res, "test finished, success");
+            thread_is_loop = 0;
+            close(conn.ipc_sd);
+            if(conn.mod_recv_data)
+                free(conn.mod_recv_data);
+            mod_snapshot_is_init = 0;
             statemachine->stat = state_success;
             break;
         }
         case MOD_SNAPSHOT_STATUS_FAILED: {
             PPDEBUG(ctx, conn.mod_res, "test finished, failed");
+            thread_is_loop = 0;
             close(conn.ipc_sd);
             if(conn.mod_recv_data)
                 free(conn.mod_recv_data);

@@ -36,6 +36,7 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
         }
         TDEBUG("MOD: %d, CMD: %d", ctx->ipc_header.mod, ctx->ipc_header.cmd);
         buf = calloc(1, ctx->ipc_header.len + 1);
+        usleep(10000);
         if (socket_mcast_recvfrom(w->fd, buf, ctx->ipc_header.len, &ctx->remote_addr) == -1)
         {
             TDEBUG("main recv wrong data from sender. error");
@@ -59,9 +60,9 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
             // p_state->stat = STATEMACHINE_FAILED;
             break;
         }
+        usleep(10000);
         TDEBUG("MOD: %d, CMD: %d, LEN:%d", ctx->ipc_header.mod, ctx->ipc_header.cmd, ctx->ipc_header.len);
         buf = calloc(1, ctx->ipc_header.len + 1);
-        usleep(5000);
         if (socket_tcp_recv(w->fd, buf, ctx->ipc_header.len) != ctx->ipc_header.len)
         {
             TDEBUG("main recv wrong data from sender. error");
@@ -124,6 +125,8 @@ static void tcp_server_accept_callback(struct ev_loop *loop, struct ev_io *w, in
     socklen_t client_len = sizeof(client_addr);
 
     ctx->tcp_accept_sockfd = accept(w->fd, (struct sockaddr *)&client_addr, &client_len);
+    int flags = fcntl(ctx->tcp_accept_sockfd, F_GETFL, 0);
+    fcntl(ctx->tcp_accept_sockfd, F_SETFL, flags | O_NONBLOCK);
     ev_io_init(&ctx->client_rd_io, cmd_read_callback, ctx->tcp_accept_sockfd, EV_READ);
     ev_io_start(loop, &ctx->client_rd_io);
 }
