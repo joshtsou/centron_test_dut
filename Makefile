@@ -10,7 +10,7 @@ export PKG_INSTALL_DIR=$(OUTDIR)
 
 DEBUG = n
 CROSS = smax
-CON=
+CON=tcp
 
 ifeq ($(DEBUG), y)
 	CFLAGS += -DDEBUG

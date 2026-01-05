@@ -1,0 +1,234 @@
+{
+  "Network": {
+    "0": {
+      "BootProto": "static",
+      "ConnectionType": "wired",
+      "DHCP": {
+        "DNSServer1": "",
+        "DNSServer2": "",
+        "Gateway": "",
+        "IPAddress": "",
+        "IPv6DNSServer1": "",
+        "IPv6DNSServer2": "",
+        "IPv6Gateway": "",
+        "IPv6IPAddress": "",
+        "IPv6Prefix": 64,
+        "SubnetMask": ""
+      },
+      "DNSAlive": true,
+      "GatewayAlive": false,
+      "IPv6BootProto": "static",
+      "IPv6DNSAlive": false,
+      "IPv6GatewayAlive": false,
+      "LinkLocal": {
+        "IPAddress": "169.254.123.225",
+        "IPv6IPAddress": "fe80::d6a4:25ff:fe00:d4d9",
+        "IPv6Prefix": 64,
+        "SubnetMask": "255.255.0.0"
+      },
+      "LinkState": true,
+      "MACAddress": "d4:a4:25:00:d4:d9",
+      "Mode": "full",
+      "Name": "eth0",
+      "PPPoE": {
+        "DNSServer1": "",
+        "DNSServer2": "",
+        "Enabled": false,
+        "Gateway": "",
+        "IPAddress": "",
+        "IPv6DNSServer1": "",
+        "IPv6DNSServer2": "",
+        "IPv6Enabled": false,
+        "IPv6Gateway": "",
+        "IPv6IPAddress": "",
+        "IPv6Prefix": 64,
+        "Password": "",
+        "Status": "",
+        "SubnetMask": "",
+        "Username": "@ucam.hinet.net"
+      },
+      "Speed": "100",
+      "Static": {
+        "DNSServer1": "168.95.1.1",
+        "DNSServer2": "168.95.192.1",
+        "DNSServer3": "",
+        "DNSServer4": "",
+        "Gateway": "192.168.8.1",
+        "IPAddress": "192.168.8.5",
+        "IPv6DNSServer1": "2001:4860:4860::8888",
+        "IPv6DNSServer2": "2001:4860:4860::8844",
+        "IPv6Gateway": "2001::1",
+        "IPv6IPAddress": "2001::100",
+        "IPv6Prefix": 64,
+        "SubnetMask": "255.255.255.0"
+      },
+      "Static2": {
+        "Enabled": true,
+        "Gateway": "",
+        "IPAddress": "192.168.1.10",
+        "IPv6Gateway": "",
+        "IPv6IPAddress": "",
+        "IPv6Prefix": 64,
+        "SubnetMask": "255.255.255.0"
+      }
+    },
+    "Cloud": {
+      "DeviceID": "",
+      "Enabled": false
+    },
+    "Count": 1,
+    "Filter": {
+      "Address": {
+        "Count": 0,
+        "MaxCount": 10
+      },
+      "DropIcmp4": false,
+      "DropIcmp6": false,
+      "Enabled": false,
+      "Policy4": "allow",
+      "Policy6": "allow"
+    },
+    "HTTP": {
+      "Authentication": "digest",
+      "Domain": "VS8",
+      "Port": 80,
+      "Port2": -1
+    },
+    "HTTPS": {
+      "Enabled": false
+    },
+    "Internet": {
+      "Alive": false,
+      "URL1": "",
+      "URL2": "",
+      "URL3": ""
+    },
+    "MaxCount": 1,
+    "Streaming": {
+      "RTSP": {
+        "Authentication": "digest",
+        "Enabled": true,
+        "EndRTPPort": 20000,
+        "MaxViewers": 20,
+        "Path": {
+          "0": {
+            "AccessName": "stream.sdp1-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 0
+          },
+          "1": {
+            "AccessName": "stream.sdp1-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 0
+          },
+          "2": {
+            "AccessName": "stream.sdp2-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 1
+          },
+          "3": {
+            "AccessName": "stream.sdp2-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 1
+          },
+          "4": {
+            "AccessName": "stream.sdp3-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 2
+          },
+          "5": {
+            "AccessName": "stream.sdp3-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 2
+          },
+          "6": {
+            "AccessName": "stream.sdp4-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 3
+          },
+          "7": {
+            "AccessName": "stream.sdp4-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 3
+          },
+          "8": {
+            "AccessName": "stream.sdp5-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 4
+          },
+          "9": {
+            "AccessName": "stream.sdp5-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 4
+          },
+          "10": {
+            "AccessName": "stream.sdp6-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 5
+          },
+          "11": {
+            "AccessName": "stream.sdp6-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 5
+          },
+          "12": {
+            "AccessName": "stream.sdp7-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 6
+          },
+          "13": {
+            "AccessName": "stream.sdp7-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 6
+          },
+          "14": {
+            "AccessName": "stream.sdp8-1",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 0,
+            "VideoSource": 7
+          },
+          "15": {
+            "AccessName": "stream.sdp8-2",
+            "AudioProfile": -1,
+            "AudioSource": -1,
+            "VideoProfile": 1,
+            "VideoSource": 7
+          },
+          "Count": 16,
+          "MaxCount": 16
+        },
+        "Port": 554,
+        "StartRTPPort": 10000
+      }
+    }
+  }
+}

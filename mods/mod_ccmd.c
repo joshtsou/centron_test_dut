@@ -26,7 +26,9 @@ char *param_file_path[] = {
     "./videosource.json",
     "./audiosource.json",
     "./ptz.json",
-    "./storage.json"
+    "./storage.json",
+    "./network.json",
+    "./serial.json"
 };
 
 static conn_t conn = {0};

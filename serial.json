@@ -1,0 +1,16 @@
+{
+  "Serial": {
+    "0": {
+      "BaudRate": 2400,
+      "Bias": false,
+      "DataBits": 8,
+      "Parity": "none",
+      "Protocol": "Pelco-D",
+      "Purpose": "PTZ",
+      "StopBits": 1,
+      "Termination": false
+    },
+    "Count": 1,
+    "MaxCount": 1
+  }
+}

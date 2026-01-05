@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <sys/select.h>
+#include <stdbool.h>
 #include "jansson.h"
 #include "ev.h"
 #include "mod_sscmd.h"
@@ -18,8 +19,15 @@ typedef struct connection {
 	char mod_res[1024];
 } conn_t;
 
+typedef struct ipc_thread_data {
+	conn_t *conn;
+	main_ctx *ctx;
+	pthread_t ipc_pthread;
+} ipc_thread_data_t;
+
 static int mod_sscmd_is_init = 0;
 static conn_t conn[MAX_CONNECTION_NUMBER] = {0};
+static bool thread_is_loop;
 
 int h1n1_ss_request_command(conn_t *conn, int command, unsigned char *data, int datalen)
 {
@@ -27,7 +35,7 @@ int h1n1_ss_request_command(conn_t *conn, int command, unsigned char *data, int 
 	if(!IPC_SOCKET_CHECK(conn->ipc))
 	{
 		//fixme: how to handle this exception
-		PDEBUG("Ch%d%d send cmd=%d fail due to ipc channel failure", conn->channel, conn->stream, command);
+		TDEBUG("Ch%d%d send cmd=%d fail due to ipc channel failure", conn->channel, conn->stream, command);
 		return -1;
 	}
 	hdr.sync = H1N1_SSCMD_MAGIC_SYNC;
@@ -38,13 +46,13 @@ int h1n1_ss_request_command(conn_t *conn, int command, unsigned char *data, int 
 	if(n < 0)
 	{
 		//fixme: how to handle this exception
-		PDEBUG("send cmd=%d fail due to ipc channel failure", command);
+		TDEBUG("send cmd=%d fail due to ipc channel failure", command);
 		return -1;
 	}
 	if(data && datalen > 0 && IPC_Send(conn->ipc, data, datalen) <= 0)
 	{
 		//fixme: how to handle this exception
-		PDEBUG("send cmd=%d fail due to ipc channel failure", command);
+		TDEBUG("send cmd=%d fail due to ipc channel failure", command);
 		return -1;
 	}
 	return 0;
@@ -58,7 +66,15 @@ int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 	{
 		// fixme: disconnec
 		//TDEBUG("RECV SSCMD header failed: len = %d, size not match. channel: %d, stream: %d, conn_fd: %d",n, conn->channel, conn->stream, conn->ipc->fd);
-		PPDEBUG(ctx, conn->mod_res, "RECV SSCMD header failed: len = %d, size not match. channel: %d, stream: %d, conn_fd: %d",n, conn->channel, conn->stream, conn->ipc->fd);
+		if(n == -1) {
+			PPDEBUG(ctx, conn->mod_res, "RECV SSCMD ipc header failed, recv error, channel: %d, stream: %d", conn->channel, conn->stream);
+		}
+		else if (n == 0) {
+			PPDEBUG(ctx, conn->mod_res, "RECV SSCMD ipc remote connection close. channel: %d, stream: %d", conn->channel, conn->stream);
+		}
+		else {
+			PPDEBUG(ctx, conn->mod_res, "RECV SSCMD header failed: len = %d, size not match. channel: %d, stream: %d, conn_fd: %d",n, conn->channel, conn->stream, conn->ipc->fd);
+		}
 		return -1;
 	}
 	else
@@ -125,6 +141,62 @@ int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 	return 0;
 }
 #endif
+
+void *ssmd_ipc_recv_thread(void *arg)
+{
+    struct timeval tv;
+	ipc_thread_data_t *data = (ipc_thread_data_t*)arg;
+    conn_t *conn = data->conn;
+    main_ctx *ctx = data->ctx;
+	int ret = 0;
+    //statemachine_t *pstat = ctx->statemachine;
+	TDEBUG("sscmd ipc recv thread running...");
+    do {
+		fd_set rfds;
+		int highfd = -1;
+        tv.tv_sec = 5;
+        tv.tv_usec = 0;
+		FD_ZERO(&rfds);
+		for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
+			for(int s=0; s<CHT_VIDEO_SOURCE_STREAM_NUMBER; s++) {
+				int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
+				if(IPC_SOCKET_CHECK(conn[idx].ipc))
+				{
+					FD_SET(IPC_Select_Object(conn[idx].ipc), &rfds);
+					highfd = highfd > IPC_Select_Object(conn[idx].ipc) ? highfd : IPC_Select_Object(conn[idx].ipc);
+				}
+			}
+		}
+        ret = select(highfd+1, &rfds, NULL, NULL, &tv);
+		if(ret > 0) {
+			for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
+				for(int s=0; s<CHT_VIDEO_SOURCE_STREAM_NUMBER; s++) {
+					int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
+					if(IPC_SOCKET_CHECK(conn[idx].ipc))
+					{
+						if(FD_ISSET(IPC_Select_Object(conn[idx].ipc), &rfds))
+						{
+							//TDEBUG("sscmd ipc socket reading... ch: %d, stream: %d\n", ch, s);
+							if(h1n1_ss_ipc_read(&conn[idx], ctx)) {
+								//FIXME: it still is not good solution now
+								//how should we do reactions once our streaming server was disconnected?
+								//conn[ch]->first_connect = 1; // treat as the first connection to avoid make the record clips without connect to NC server
+								statemachine_t *p_state = (statemachine_t *)ctx->statemachine;
+    							p_state->stat = MOD_SSCMD_STATUS_FAILED;
+							}
+						}
+					}
+				}
+			}
+		}
+		else if (ret == -1) {
+			TDEBUG("sscmd module ipc select error");
+        	//break;
+		}
+    }while(thread_is_loop);
+    return 0;
+}
+
 static void sscmd_recv_io_callback(struct ev_loop *loop, struct ev_io *w, int revents) {
 	conn_t *con = (conn_t*)w->data;
 	main_ctx *ctx = (main_ctx*)ev_userdata(loop);
@@ -150,8 +222,12 @@ int mod_sscmd_recv_thread(conn_t *conn, main_ctx *ctx) {
 int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int state_failed) {
     main_ctx *ctx = (main_ctx*)statemachine->data;
     int is_err = 0;
+	ipc_thread_data_t thread_data = {0};
+	thread_data.conn = conn;
+	thread_data.ctx = ctx;
     switch(statemachine->stat) {
         case MOD_SSCMD_STATUS_START:
+			thread_is_loop = true;
             do {
                 if(mod_sscmd_is_init)
                     break;
@@ -172,31 +248,42 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
                 }
             }while(0);
             if(is_err) {
-                //statemachine->stat = MOD_SSCMD_STATUS_START + ctx->ipc_header.cmd;
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             }
             else {
-                mod_sscmd_is_init = 1;
 				sprintf(ctx->mod_name, "sscmd");
-                //statemachine->stat = MOD_SSCMD_STATUS_START + ctx->ipc_header.cmd;
 				statemachine->stat = MOD_SSCMD_STATUS_RECV_THREAD;
             }
             break;
 		case MOD_SSCMD_STATUS_RECV_THREAD:
 			TDEBUG("MOD_SSCMD_STATUS_RECV_THREAD");
-			for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
-				for(int s=0; s<CHT_VIDEO_SOURCE_STREAM_NUMBER; s++) {
-					int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
-					if(!ev_is_active(&conn[idx].rd_io)) {
-						PDEBUG("recv thread created, ch:%d, stream:%d", ch, s);
-						mod_sscmd_recv_thread(&conn[idx], ctx);
-					}
-				}
-			}
+			do {
+				if(mod_sscmd_is_init)
+					break;
+				// FD_ZERO(&thread_data.rfds);
+				// for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
+				// 	for(int s=0; s<CHT_VIDEO_SOURCE_STREAM_NUMBER; s++) {
+				// 		int idx = ch*CHT_VIDEO_SOURCE_STREAM_NUMBER+s;
+				// 		// if(!ev_is_active(&conn[idx].rd_io)) {
+				// 		// 	PDEBUG("recv thread created, ch:%d, stream:%d", ch, s);
+				// 		// 	mod_sscmd_recv_thread(&conn[idx], ctx);
+				// 		// }
+				// 		if(IPC_SOCKET_CHECK(conn[idx].ipc))
+				// 		{
+				// 			FD_SET(IPC_Select_Object(conn[idx].ipc), &thread_data.rfds);
+				// 			thread_data.highfd = thread_data.highfd > IPC_Select_Object(conn[idx].ipc) ? thread_data.highfd : IPC_Select_Object(conn[idx].ipc);
+				// 		}
+				// 	}
+				// }
+				pthread_create(&thread_data.ipc_pthread, NULL, ssmd_ipc_recv_thread, &thread_data);
+				pthread_detach(thread_data.ipc_pthread);
+				mod_sscmd_is_init = 1;
+			}while(0);
 			statemachine->stat = MOD_SSCMD_STATUS_RECV_THREAD + ctx->ipc_header.cmd;
+			//statemachine->stat = STATEMACHINE_SLEEP;
 			break;
         case MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_SDP:
-			usleep(500000);
+			//usleep(500000);
             TDEBUG("MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_SDP");
             is_err = 0;
             for(int ch=0; ch<VIDEO_SOURCE_CHANNEL_NUMBER; ch++) {
@@ -214,7 +301,7 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
             if(is_err) {
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
-                statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }
             break;
         case MOD_SSCMD_STATUS_H1N1_SSCMD_MEDIA_EX_PLAY: {
@@ -236,16 +323,16 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 					arg.movie_time = time(NULL) - POST_BUFFER;
 					arg.batch_length = BATCH_LENGTH;
 					arg.local_rec = 0;
-					if(h1n1_ss_request_command(&conn[idx], H1N1_SSCMD_MEDIA_IDX, (unsigned char*)&arg, sizeof(struct h1n1_sscmd_media_stream)) != 0) {
+					if(h1n1_ss_request_command(&conn[idx], H1N1_SSCMD_MEDIA_EX_PLAY, (unsigned char*)&arg, sizeof(struct h1n1_sscmd_media_stream)) != 0) {
                         is_err |= 1;
-                        TDEBUG("MOD SSCMD H1N1_SSCMD_MEDIA_IDX ERROR, channel: %d, stream: %d",ch, s);
+                        TDEBUG("MOD SSCMD H1N1_SSCMD_MEDIA_EX_PLAY ERROR, channel: %d, stream: %d",ch, s);
                     }
 				}
 			}
 			if(is_err) {
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
-                statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }
             //statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
             break;
@@ -266,7 +353,7 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 			if(is_err) {
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
-                statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }
             //statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
             break;
@@ -294,21 +381,21 @@ int mod_sscmd_handler_run(statemachine_t *statemachine, int state_success, int s
 			if(is_err) {
                 statemachine->stat = MOD_SSCMD_STATUS_FAILED;
             } else {
-                statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
+                statemachine->stat = STATEMACHINE_SLEEP;
             }
             //statemachine->stat = MOD_SSCMD_STATUS_SUCCESS;
             break;
 		}
         case MOD_SSCMD_STATUS_SUCCESS:
-			usleep(500000);
             TDEBUG("MOD_SSCMD_STATUS_SUCCESS");
+			thread_is_loop = 0;
 			// char success_message[128] = "\0";
 			// PPDEBUG(ctx, success_message, "MOD SSCMD SEND SUCCESS, CMD: %d", ctx->ipc_header.cmd);
             statemachine->stat = state_success;
             break;
         case MOD_SSCMD_STATUS_FAILED:
-			usleep(500000);
             TDEBUG("MOD_SSCMD_STATUS_FAILED");
+			thread_is_loop = 0;
             statemachine->stat = state_failed;
             break;
         default:
