@@ -107,7 +107,7 @@ int h1n1_ss_ipc_read(conn_t *conn, main_ctx *ctx)
 					return -1;
 				}
 				else {
-					PPDEBUG(ctx, conn->mod_res, "H1N1_SSCMD_MEDIA_IDX recv ok, channel:%d, stream: %d" ,conn->channel, conn->stream);
+					TDEBUG("H1N1_SSCMD_MEDIA_IDX recv ok, channel:%d, stream: %d" ,conn->channel, conn->stream);
 				}
 				free(data_buffer);
 			}

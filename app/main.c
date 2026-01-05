@@ -60,7 +60,7 @@ static void cmd_read_callback(struct ev_loop *loop, struct ev_io *w, int revents
             // p_state->stat = STATEMACHINE_FAILED;
             break;
         }
-        usleep(20000);
+        usleep(50000);
         TDEBUG("MOD: %d, CMD: %d, LEN:%d", ctx->ipc_header.mod, ctx->ipc_header.cmd, ctx->ipc_header.len);
         buf = calloc(1, ctx->ipc_header.len + 1);
         if (socket_tcp_recv(w->fd, buf, ctx->ipc_header.len) != ctx->ipc_header.len)
